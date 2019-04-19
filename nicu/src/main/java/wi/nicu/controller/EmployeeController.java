@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import wi.nicu.exception.EmployeeNotFoundException;
 import wi.nicu.model.Employee;
 import wi.nicu.repository.EmployeeRepository;
 
@@ -27,6 +28,7 @@ public class EmployeeController {
 	@GetMapping("/employee/{id}") 
 	public Optional<Employee> getEmployee(@PathVariable String id) { //Method parameter should be bound to a URI template variable
 		Optional<Employee> emp = employeeRepository.findById(id);	//Find data by ID
+		if(!emp.isPresent())throw new EmployeeNotFoundException(); //If no exist, throw exception
 		return emp;
 	}
 
@@ -39,6 +41,8 @@ public class EmployeeController {
 			emp.setLastName(newEmployee.getLastName());
 			emp.setEmail(newEmployee.getEmail());
 			employeeRepository.save(emp); //Update data
+		}else {
+			throw new EmployeeNotFoundException();
 		}
 		return optionalEmp;
 	}
@@ -47,7 +51,8 @@ public class EmployeeController {
 	public String deleteEmployee(@PathVariable String id) {
 		Boolean result = employeeRepository.existsById(id);	//Whether an entity with the given id exists
 		employeeRepository.deleteById(id);	//Delete data by ID
-		return "{ \"success\" : " + (result ? "true" : "false") + " }";
+		if(!result)throw new EmployeeNotFoundException();
+		return "{ \"success\" : " + (result ? "true" : "") + " }";
 	}
 
 	@PostMapping("/employee") 
