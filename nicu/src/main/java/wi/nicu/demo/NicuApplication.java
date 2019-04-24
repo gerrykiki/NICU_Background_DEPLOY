@@ -15,5 +15,4 @@ public class NicuApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(NicuApplication.class, args);
 	}
-
 }
