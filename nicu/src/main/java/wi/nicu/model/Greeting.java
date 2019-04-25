@@ -17,7 +17,7 @@ public class Greeting {
 //		return content;
 //	}
 	private String content;
-	
+	//Server response Client's message model
 	public Greeting() {
     }
 

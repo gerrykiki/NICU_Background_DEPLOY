@@ -39,7 +39,7 @@ function sendName() {
 		'name' : $("#name").val()
 	}));
 }
-s
+
 // 顯示接收回來的訊息方法
 function showGreeting(message) {
 	$("#greetings").append("<tr><td>" + message + "</td></tr>");

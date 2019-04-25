@@ -2,7 +2,7 @@ package wi.nicu.model;
 
 public class HelloMessage {
 	private String name;
-	
+	//Receive message model
 	public HelloMessage() {
     }
 
