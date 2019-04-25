@@ -17,6 +17,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		// "/queue" is one-to-one
 		// message broker
 		config.setApplicationDestinationPrefixes("/app");
+		// Prefix
+		// routed to message-handling methods(Controller) to do application work
 	}
 
 	@Override

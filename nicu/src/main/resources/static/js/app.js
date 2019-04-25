@@ -19,7 +19,7 @@ function connect() {
 		setConnected(true);
 		console.log('Connected: ' + frame);
 		stompClient.subscribe('/topic/greetings', function(greeting) {
-			showGreeting(JSON.parse(greeting.body).content);
+			showGreeting(JSON.parse(greeting.body).content);// Present the message body in the frame
 		});
 	});
 }
@@ -34,7 +34,7 @@ function disconnect() {
 }
 
 // 傳送訊息方法
-function sendName() {
+function sendName() { // Server destination(Prefix + MessageMapping)
 	stompClient.send("/app/hello", {}, JSON.stringify({
 		'name' : $("#name").val()
 	}));
