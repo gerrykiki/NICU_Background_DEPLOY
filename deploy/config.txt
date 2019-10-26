@@ -1,0 +1,6 @@
+api_host_url = https://eip-api.vghtpe.gov.tw
+
+app_private_id = 3be8beeba5fa401abb88a1f27956b796
+app_private_passwd = af0513c471ec4dbaa41d355b4a2a0d77
+
+public_app_user_sso_token = c520a910-97ba-4110-bb2e-4d9d3b529689
