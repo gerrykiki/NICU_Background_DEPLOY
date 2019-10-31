@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 public class SocketTest extends Thread {
 
 	public final static int SOCKET_PORT = 9000;
-	public final static String SERVER = "10.100.83.150"; // localhost
+	public final static String SERVER = "10.100.83.150";
 	public final static String FILE = "CenterM3150.txt";
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	Socket client = null;

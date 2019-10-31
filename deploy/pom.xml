@@ -74,7 +74,7 @@
 			<groupId>db2.jdbc</groupId>
 			<artifactId>db2jcc4.src</artifactId>
 			<scope>system</scope>
-			<version>11.5</version>
+			<version>10.5</version>
 			<systemPath>${basedir}/src/main/resources/lib/db2jcc4.jar</systemPath>
 		</dependency>
 
@@ -82,7 +82,7 @@
 			<groupId>db2.jdbc.license</groupId>
 			<artifactId>db2jcc4.src.license</artifactId>
 			<scope>system</scope>
-			<version>11.5</version>
+			<version>10.5</version>
 			<systemPath>${basedir}/src/main/resources/lib/db2jcc_license_cu.jar</systemPath>
 		</dependency>
 

@@ -6,13 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 
-import com.ibm.db2.cmx.annotation.Table;
+//import com.ibm.db2.cmx.annotation.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
-@Table(name = "HBED")
+//@Table(name = "HBED")
 @Data
 @AllArgsConstructor
 @NamedStoredProcedureQueries({
