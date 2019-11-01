@@ -11,28 +11,29 @@ import java.net.UnknownHostException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SocketTest extends Thread {
+public class SocketTest /* extends Thread */ {
 
-	public final static int SOCKET_PORT = 9000;
-	public final static String SERVER = "10.100.83.150";
-	public final static String FILE = "CenterM3150.txt";
-	Logger logger = LoggerFactory.getLogger(this.getClass());
-	Socket client = null;
-	Socket socket = null;
-	ServerSocket server;
+	public void tcpp() {
+		int SOCKET_PORT = 9000;
+		String SERVER = "10.100.83.150";
+		String FILE = "CenterM3150.txt";
+		Logger logger = LoggerFactory.getLogger(this.getClass());
+		Socket client = null;
+		Socket socket = null;
+		ServerSocket server;
 
-	public SocketTest() {
+		// public SocketTest() {
 		try {
 			client = new Socket(SERVER, SOCKET_PORT);
-			//server = new ServerSocket(5556);
+			// server = new ServerSocket(5556);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+		// }
 
-	public void run() {
+		// public void run() {
 		BufferedInputStream in;
 		BufferedOutputStream ToMe;
 		BufferedOutputStream ToFrontend;
@@ -44,21 +45,21 @@ public class SocketTest extends Thread {
 		String data = "";
 
 		try {
-			//socket = server.accept();
-			//logger.info("取得Frontend連線 ： " + socket);
+			// socket = server.accept();
+			// logger.info("取得Frontend連線 ： " + socket);
 
 			FileOutputStream file = new FileOutputStream(FILE);
 			ToMe = new BufferedOutputStream(file);
 
-			//ToFrontend = new BufferedOutputStream(socket.getOutputStream());
+			// ToFrontend = new BufferedOutputStream(socket.getOutputStream());
 
 			in = new BufferedInputStream(client.getInputStream());
 
 			while ((len = in.read(mybytearray, 0, mybytearray.length)) > 0) {
 				data = new String(mybytearray, 0, len);
 
-				//ToFrontend.write(mybytearray, 0, len);
-				//ToFrontend.flush();
+				// ToFrontend.write(mybytearray, 0, len);
+				// ToFrontend.flush();
 
 				ToMe.write(mybytearray, 0, len);
 				ToMe.flush();
@@ -70,5 +71,6 @@ public class SocketTest extends Thread {
 			e.printStackTrace();
 		}
 
+		// }
 	}
 }
