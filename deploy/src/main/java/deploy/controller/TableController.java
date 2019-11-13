@@ -45,8 +45,10 @@ public class TableController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {
-				logger.info("Logger_info -->" + rs.getString(1) + "\r\n");
-				out.write(rs.getString(1) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+				}
 				out.flush();
 			}
 
@@ -76,15 +78,17 @@ public class TableController {
 
 			st = (Statement) conn.createStatement();
 
-			rs = (ResultSet) st.executeQuery("SELECT COLUMN_NAME,ORDINAL_POSITION,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=HBED");
+			rs = (ResultSet) st.executeQuery("SELECT PDOCNO FROM VGHTPEVG.HBED WHERE HBNURSTA='A011'");
 
 			File writename = new File("HBED.txt");
 			writename.createNewFile();
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {
-				logger.info("Logger_info -->" + rs.getString(1) + "\r\n");
-				out.write(rs.getString(1) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+				}
 				out.flush();
 			}
 
@@ -159,8 +163,10 @@ public class TableController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {
-				logger.info("Logger_info -->" + rs.getString(1) + "\r\n");
-				out.write(rs.getString(1) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+				}
 				out.flush();
 			}
 
@@ -197,8 +203,10 @@ public class TableController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {
-				logger.info("Logger_info -->" + rs.getString(1) + "\r\n");
-				out.write(rs.getString(1) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+				}
 				out.flush();
 			}
 

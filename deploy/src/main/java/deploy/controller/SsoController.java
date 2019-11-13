@@ -123,64 +123,41 @@ public class SsoController {
 
 		resp.getHeaders().get("Set-Cookie").stream().forEach(System.out::println);
 
-		/*
-		 * CookieManager cm = new CookieManager();
-		 * cm.setCookiePolicy(CookiePolicy.ACCEPT_ALL); CookieHandler.setDefault(cm);
-		 * 
-		 * new
-		 * URL("https://eipstage.vghtpe.gov.tw/login.php").openConnection().getContent()
-		 * ;
-		 * 
-		 * List<java.net.HttpCookie> cookies = cm.getCookieStore().getCookies(); for
-		 * (java.net.HttpCookie cookie : cookies) { System.out.println("Name = " +
-		 * cookie.getName()); System.out.println("Value = " + cookie.getValue());
-		 * System.out.println("Lifetime (seconds) = " + cookie.getMaxAge());
-		 * System.out.println("Path = " + cookie.getPath()); System.out.println(); }
-		 */
-
 		return "";
-
 	}
 
-//	@GetMapping("/nicu/login_check")
-//	public String login_check() throws Exception {
-//		trustAllHttpsCertificates();
-//		HttpsURLConnection.setDefaultHostnameVerifier(hv);
-//
-//		MappingJackson2HttpMessageConverter jsonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
-//		jsonHttpMessageConverter.getObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-//		restTemplate.getMessageConverters().add(jsonHttpMessageConverter);
-//
-//		HttpHeaders headers = new HttpHeaders();
-//		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-//		HttpEntity<String> entityLC = new HttpEntity<String>(headers);
-//
-//		ResponseEntity<String> resp = restTemplate.exchange("https://eipstage.vghtpe.gov.tw/login_check.php",
-//				HttpMethod.GET, entityLC, String.class);
-//		String login_check = resp.getBody();
-//
-//		return login_check;
-//	}
-//
-//	@GetMapping("/nicu/token_auth")
-//	public String token_auth() throws Exception {
-//		trustAllHttpsCertificates();
-//		HttpsURLConnection.setDefaultHostnameVerifier(hv);
-//
-//		MappingJackson2HttpMessageConverter jsonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
-//		jsonHttpMessageConverter.getObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-//		restTemplate.getMessageConverters().add(jsonHttpMessageConverter);
-//
-//		HttpHeaders headers = new HttpHeaders();
-//		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-//		HttpEntity<String> entityTA = new HttpEntity<String>(headers);
-//
-//		ResponseEntity<String> resp = restTemplate.exchange("https://eipstage.vghtpe.gov.tw/token_auth.php",
-//				HttpMethod.GET, entityTA, String.class);
-//		String token_auth = resp.getBody();
-//
-//		return token_auth;
-//	}
+	@GetMapping("/test")
+	public String test(HttpServletRequest request) throws Exception {
+		trustAllHttpsCertificates();
+		HttpsURLConnection.setDefaultHostnameVerifier(hv);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		HttpEntity<String> entityLC = new HttpEntity<String>(headers);
+
+		ResponseEntity<String> resp = restTemplate.exchange("https://jsonplaceholder.typicode.com/posts",
+				HttpMethod.GET, entityLC, String.class);
+		String login_check = resp.getBody();
+
+		//resp.getHeaders().get("Set-Cookie").stream().forEach(System.out::println);
+
+		CookieManager cm = new CookieManager();
+		cm.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+		CookieHandler.setDefault(cm);
+
+		new URL("https://jsonplaceholder.typicode.com/posts").openConnection().getContent();
+
+		List<java.net.HttpCookie> cookies = cm.getCookieStore().getCookies();
+		for (java.net.HttpCookie cookie : cookies) {
+			System.out.println("Name = " + cookie.getName());
+			System.out.println("Value = " + cookie.getValue());
+			System.out.println("Lifetime (seconds) = " + cookie.getMaxAge());
+			System.out.println("Path = " + cookie.getPath());
+			System.out.println();
+		}
+
+		return login_check;
+	}
 
 	@PostMapping("/nicu/get_uuid")
 	public String get_uuid(@RequestBody BodyGetUuid uuid) throws Exception {
@@ -220,18 +197,16 @@ public class SsoController {
 		// jsonHttpMessageConverter.getObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,
 		// false);
 		// restTemplate.getMessageConverters().add(jsonHttpMessageConverter);
-		
+
 		Map<Object, Object> jssss = new HashMap<>();
-		jssss.put("APP_USER_CHT_NAME","");
+		jssss.put("APP_USER_CHT_NAME", "");
 
 		Map<String, Object> jsss = new HashMap<>();
 		jsss.put("PRIVILEGED_APP_SSO_TOKEN", "b8ecabdf-711b-4b82-a22f-a8bafdcc8abe");
 		jsss.put("PUBLIC_APP_USER_SSO_TOKEN", "7e40161d-2be3-4804-94eb-2799f63883b5");
 		jsss.put("APP_COMPANY_UUID", "5fbca345-d7f7-43cd-b324-955182d3b66e");
 		jsss.put("APP_USER_NODE_UUID", "83bf85b2-d246-436d-a912-d2f8fa499b07");
-		jsss.put( "APP_USER_BASIC_PROFILE",jssss);
-		
-		
+		jsss.put("APP_USER_BASIC_PROFILE", jssss);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));

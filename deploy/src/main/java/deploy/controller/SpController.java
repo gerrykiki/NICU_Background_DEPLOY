@@ -41,23 +41,25 @@ public class SpController {
 
 			cs = (CallableStatement) conn.prepareCall("CALL VGHTPEVG.ERDISP(?,?,?,?)");
 
-			cs.setString(1, "41974941");
+			cs.setString(1, "45655310");
 			cs.setString(2, "25026885");
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.registerOutParameter(4, Types.VARCHAR);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
-
+			System.out.println("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
+			
 			rs = (ResultSet) cs.executeQuery();
 
 			File writename = new File("ERDISP.txt");
 			writename.createNewFile();
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
-			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+			// System.out.println("Meta--> " + rs.getMetaData());
+
+			while (rs.next()) {
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -93,7 +95,7 @@ public class SpController {
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.registerOutParameter(4, Types.VARCHAR);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
+			System.out.println("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -102,8 +104,10 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {
-				logger.info("Logger_info_2-->" + rs.getString(1));
-				out.write(rs.getString(1));
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+				}
 				out.flush();
 			}
 
@@ -138,7 +142,7 @@ public class SpController {
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.registerOutParameter(4, Types.VARCHAR);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
+			System.out.println("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -146,9 +150,13 @@ public class SpController {
 			writename.createNewFile();
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
+			// System.out.println("Logger_info_1-->" + rs.getMetaData());
+
 			while (rs.next()) {
-				logger.info("Logger_info_2-->" + rs.getString(1));
-				out.write(rs.getString(1));
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+				}
 				out.flush();
 			}
 
@@ -184,7 +192,7 @@ public class SpController {
 			cs.registerOutParameter(4, Types.VARCHAR);
 			cs.registerOutParameter(5, Types.INTEGER);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getString(4) + "_" + cs.getInt(5));
+			System.out.println("Logger_info_1-->" + cs.getString(4) + "_" + cs.getInt(5));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -193,14 +201,10 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {
-				logger.info("Logger_info_2-->" + rs.getString(1) + "\r\n" + rs.getString(2) + "\r\n" + rs.getString(3)
-						+ "\r\n" + rs.getString(4) + "\r\n" + rs.getString(5) + "\r\n" + rs.getString(6) + "\r\n"
-						+ rs.getString(7) + "\r\n" + rs.getString(8) + "\r\n" + rs.getString(9) + "\r\n"
-						+ rs.getString(10) + "\r\n" + rs.getString(11) + "\r\n");
-				out.write(rs.getString(1) + "\r\n" + rs.getString(2) + "\r\n" + rs.getString(3) + "\r\n"
-						+ rs.getString(4) + "\r\n" + rs.getString(5) + "\r\n" + rs.getString(6) + "\r\n"
-						+ rs.getString(7) + "\r\n" + rs.getString(8) + "\r\n" + rs.getString(9) + "\r\n"
-						+ rs.getString(10) + "\r\n" + rs.getString(11) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+				}
 				out.flush();
 			}
 
@@ -237,7 +241,7 @@ public class SpController {
 			cs.registerOutParameter(5, Types.INTEGER);
 			cs.registerOutParameter(6, Types.VARCHAR);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(5) + "_" + cs.getString(6));
+			System.out.println("Logger_info_1-->" + cs.getInt(5) + "_" + cs.getString(6));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -245,17 +249,14 @@ public class SpController {
 			writename.createNewFile();
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
+			//System.out.println("Meta --> " + rs.getMetaData());
+
 			while (rs.next()) {
-				logger.info("Logger_info_2-->" + rs.getString(1) + "\r\n" + rs.getString(2) + "\r\n" + rs.getString(3)
-						+ "\r\n" + rs.getString(4) + "\r\n" + rs.getString(5) + "\r\n" + rs.getString(6) + "\r\n"
-						+ rs.getString(7) + "\r\n" + rs.getString(8) + "\r\n" + rs.getString(9) + "\r\n"
-						+ rs.getString(10) + "\r\n" + rs.getString(11) + "\r\n" + rs.getString(12) + "\r\n"
-						+ rs.getString(13) + "\r\n" + rs.getString(14) + "\r\n");
-				out.write(rs.getString(1) + "\r\n" + rs.getString(2) + "\r\n" + rs.getString(3) + "\r\n"
-						+ rs.getString(4) + "\r\n" + rs.getString(5) + "\r\n" + rs.getString(6) + "\r\n"
-						+ rs.getString(7) + "\r\n" + rs.getString(8) + "\r\n" + rs.getString(9) + "\r\n"
-						+ rs.getString(10) + "\r\n" + rs.getString(11) + "\r\n" + rs.getString(12) + "\r\n"
-						+ rs.getString(13) + "\r\n" + rs.getString(14) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+				}
+
 				out.flush();
 			}
 
@@ -291,7 +292,7 @@ public class SpController {
 			cs.setInt(4, 855);
 			cs.registerOutParameter(5, Types.INTEGER);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(5));
+			System.out.println("Logger_info_1-->" + cs.getInt(5));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -300,12 +301,10 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {
-				logger.info("Logger_info_2-->" + rs.getString(1) + "\r\n" + rs.getString(2) + "\r\n" + rs.getString(3)
-						+ "\r\n" + rs.getString(4) + "\r\n" + rs.getString(5) + "\r\n" + rs.getString(6) + "\r\n"
-						+ rs.getString(7));
-				out.write(
-						rs.getString(1) + "\r\n" + rs.getString(2) + "\r\n" + rs.getString(3) + "\r\n" + rs.getString(4)
-								+ "\r\n" + rs.getString(5) + "\r\n" + rs.getString(6) + "\r\n" + rs.getString(7));
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+				}
 				out.flush();
 			}
 
@@ -340,7 +339,7 @@ public class SpController {
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.registerOutParameter(4, Types.VARCHAR);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
+			System.out.println("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -349,9 +348,9 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -387,7 +386,7 @@ public class SpController {
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.registerOutParameter(4, Types.VARCHAR);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
+			System.out.println("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -396,9 +395,9 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -432,7 +431,7 @@ public class SpController {
 			cs.setString(1, "41974941");
 			cs.registerOutParameter(2, Types.INTEGER);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(2));
+			System.out.println("Logger_info_1-->" + cs.getInt(2));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -441,9 +440,9 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -479,7 +478,7 @@ public class SpController {
 			cs.setString(3, "ALL");
 			cs.registerOutParameter(4, Types.INTEGER);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(4));
+			System.out.println("Logger_info_1-->" + cs.getInt(4));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -488,9 +487,9 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -528,7 +527,7 @@ public class SpController {
 			cs.registerOutParameter(5, Types.INTEGER);
 			cs.registerOutParameter(6, Types.VARCHAR);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(5) + "_" + cs.getString(6));
+			System.out.println("Logger_info_1-->" + cs.getInt(5) + "_" + cs.getString(6));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -537,9 +536,9 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -574,7 +573,7 @@ public class SpController {
 			cs.setString(2, "2019-01-05");
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(3));
+			System.out.println("Logger_info_1-->" + cs.getInt(3));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -582,10 +581,10 @@ public class SpController {
 			writename.createNewFile();
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
-			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+			while (rs.next()) {
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -620,7 +619,7 @@ public class SpController {
 			cs.setString(2, "2019-01-05");
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(3));
+			System.out.println("Logger_info_1-->" + cs.getInt(3));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -628,10 +627,10 @@ public class SpController {
 			writename.createNewFile();
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
-			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+			while (rs.next()) {
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -666,7 +665,7 @@ public class SpController {
 			cs.setString(2, "2019-01-05");
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(3));
+			System.out.println("Logger_info_1-->" + cs.getInt(3));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -675,9 +674,9 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -712,7 +711,7 @@ public class SpController {
 			cs.setString(2, "2019-01-05");
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(3));
+			System.out.println("Logger_info_1-->" + cs.getInt(3));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -721,9 +720,9 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -758,7 +757,7 @@ public class SpController {
 			cs.setString(2, "2019-01-05");
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(3));
+			System.out.println("Logger_info_1-->" + cs.getInt(3));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -767,9 +766,9 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -804,7 +803,7 @@ public class SpController {
 			cs.setString(2, "25026885");
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(3));
+			System.out.println("Logger_info_1-->" + cs.getInt(3));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -813,9 +812,9 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -852,7 +851,7 @@ public class SpController {
 			cs.registerOutParameter(4, Types.INTEGER);
 			cs.registerOutParameter(5, Types.VARCHAR);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(4) + "_" + cs.getString(5));
+			System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" + cs.getString(5));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -861,9 +860,9 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -898,7 +897,7 @@ public class SpController {
 			cs.setString(2, "0001");
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(3));
+			System.out.println("Logger_info_1-->" + cs.getInt(3));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -907,9 +906,9 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -945,7 +944,7 @@ public class SpController {
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.registerOutParameter(4, Types.VARCHAR);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
+			System.out.println("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -954,9 +953,9 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
@@ -993,7 +992,7 @@ public class SpController {
 			cs.registerOutParameter(4, Types.INTEGER);
 			cs.registerOutParameter(5, Types.VARCHAR);
 			cs.execute();
-			logger.info("Logger_info_1-->" + cs.getInt(4) + "_" + cs.getString(5));
+			System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" + cs.getString(5));
 
 			rs = (ResultSet) cs.executeQuery();
 
@@ -1002,9 +1001,9 @@ public class SpController {
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
 			while (rs.next()) {// 1~60
-				for (int i = 1; i <= 60; i++) {
-					logger.info("Logger_info_2-->" + rs.getString(i) + "\r\n");
-					out.write(rs.getString(i) + "\r\n");
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
 				}
 				out.flush();
 			}
