@@ -1,14 +1,14 @@
 package deploy.controller;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.db2.jcc.am.Connection;
@@ -22,14 +22,17 @@ public class TableController {
 	String url = "jdbc:db2://dbconnt.vghtpe.gov.tw:50000/VGHDBP";
 	String userName = "XVGH96";
 	String passWord = "nicuteam";
-	
+
 	/*-Get DB table data-*/
-	@GetMapping("/PBASINFO")
-	public void PBASINFO() {
+	@GetMapping("/PBASINFO/{PHISTNUM}")
+	public List<String> PBASINFO(@PathVariable String PHISTNUM) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		Statement st;
+		List<String> data = new ArrayList<String>();
+
+		System.setProperty("db2.jcc.charsetDecoderEncoder", "3");
 
 		try {
 			Class.forName(driver).newInstance();
@@ -38,38 +41,33 @@ public class TableController {
 
 			st = (Statement) conn.createStatement();
 
-			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.PBASINFO");
-
-			File writename = new File("PBASINFO.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
+			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.PBASINFO WHERE PHISTNUM='" + PHISTNUM + "'");
 
 			while (rs.next()) {
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + ":" + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			st.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
 		}
+		return data;
 	}
 
 	@GetMapping("/HBED")
-	public void HBED() {
+	public List<String> HBED() {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		Statement st;
+		List<String> data = new ArrayList<String>();
+
+		System.setProperty("db2.jcc.charsetDecoderEncoder", "3");
 
 		try {
 			Class.forName(driver).newInstance();
@@ -78,38 +76,33 @@ public class TableController {
 
 			st = (Statement) conn.createStatement();
 
-			rs = (ResultSet) st.executeQuery("SELECT PDOCNO FROM VGHTPEVG.HBED WHERE HBNURSTA='A011'");
-
-			File writename = new File("HBED.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
+			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.HBED WHERE HBNURSTA='NICU'");
 
 			while (rs.next()) {
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + ":" + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			st.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
 		}
+		return data;
 	}
 
-	@GetMapping("/PSECTION")
-	public void PSECTION() {
+	@GetMapping("/PLOC/{PCASENO}")
+	public List<String> PLOC(@PathVariable String PCASENO) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		Statement st;
+		List<String> data = new ArrayList<String>();
+
+		System.setProperty("db2.jcc.charsetDecoderEncoder", "3");
 
 		try {
 			Class.forName(driver).newInstance();
@@ -118,76 +111,33 @@ public class TableController {
 
 			st = (Statement) conn.createStatement();
 
-			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.PSECTION");
-
-			File writename = new File("PSECTION.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
-			while (rs.next()) {
-				logger.info("Logger_info -->" + rs.getString(1) + "\r\n");
-				out.write(rs.getString(1) + "\r\n");
-				out.flush();
-			}
-
-			out.close();
-			st.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("error:" + e.getMessage());
-			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
-		}
-	}
-
-	@GetMapping("/PLOC")
-	public void PLOC() {
-
-		Connection conn = null;
-		ResultSet rs = null;
-		Statement st;
-
-		try {
-			Class.forName(driver).newInstance();
-
-			conn = (Connection) DriverManager.getConnection(url, userName, passWord);
-
-			st = (Statement) conn.createStatement();
-
-			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.PLOC");
-
-			File writename = new File("PLOC.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
+			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.PLOC WHERE PCASENO='" + PCASENO + "'");
 
 			while (rs.next()) {
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + ":" + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			st.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
 		}
+		return data;
 	}
-	
-	@GetMapping("/PDOCNEW")
-	public void PDOCNEW() {
+
+	@GetMapping("/PDOCNEW/{PCASENO}")
+	public List<String> PDOCNEW(@PathVariable String PCASENO) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		Statement st;
+		List<String> data = new ArrayList<String>();
+
+		System.setProperty("db2.jcc.charsetDecoderEncoder", "3");
 
 		try {
 			Class.forName(driver).newInstance();
@@ -196,29 +146,21 @@ public class TableController {
 
 			st = (Statement) conn.createStatement();
 
-			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.PDOCNEW");
-
-			File writename = new File("PDOCNEW.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
+			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.PDOCNEW WHERE PCASENO='" + PCASENO + "'");
 
 			while (rs.next()) {
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					out.write(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + ":" + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			st.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
 		}
+		return data;
 	}
 }

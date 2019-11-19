@@ -1,8 +1,5 @@
 package deploy.controller;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.util.Arrays;
 
 import javax.net.ssl.HostnameVerifier;
@@ -17,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -72,28 +70,74 @@ public class NisController {
 	/*--ignore SSL--*/
 
 	/*---NIS---*/
-	@GetMapping("/nicu/nnis")
-	public String nnis() throws Exception {
+	@GetMapping("/QSPE/{caseno}/{st}/{et}")
+	public String QSPE(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
+			throws Exception {
 		trustAllHttpsCertificates();
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
 		HttpEntity<String> entityNNIS = new HttpEntity<String>(headers);
 
 		ResponseEntity<String> resp = restTemplate.exchange(
-				"http://10.121.11.180:8080/NPIWS/service/Nnis/QOXY/NIMA/09055917/201910200700/201910250700",
+				"http://10.121.11.180:8080/NPIWS/service/Nnis/QSPE/NIMA/" + caseno + "/" + st + "/" + et,
 				HttpMethod.GET, entityNNIS, String.class);
 		String nnis = resp.getBody();
 
-		File writename = new File("NIS.txt");
-		writename.createNewFile();
-		BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-		out.write(nnis);
+		return nnis;
+	}
+	
+	@GetMapping("/QTWPER/{caseno}/{st}/{et}")
+	public String QTWPER(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
+			throws Exception {
+		trustAllHttpsCertificates();
+		HttpsURLConnection.setDefaultHostnameVerifier(hv);
 
-		out.flush();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
+		HttpEntity<String> entityNNIS = new HttpEntity<String>(headers);
 
-		out.close();
+		ResponseEntity<String> resp = restTemplate.exchange(
+				"http://10.121.11.180:8080/NPIWS/service/Nnis/QTWPER/NIMA/" + caseno + "/" + st + "/" + et,
+				HttpMethod.GET, entityNNIS, String.class);
+		String nnis = resp.getBody();
+
+		return nnis;
+	}
+	
+	@GetMapping("/QPNOT/{caseno}/{st}/{et}")
+	public String QPNOT(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
+			throws Exception {
+		trustAllHttpsCertificates();
+		HttpsURLConnection.setDefaultHostnameVerifier(hv);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
+		HttpEntity<String> entityNNIS = new HttpEntity<String>(headers);
+
+		ResponseEntity<String> resp = restTemplate.exchange(
+				"http://10.121.11.180:8080/NPIWS/service/Nnis/QPNOT/NIMA/" + caseno + "/" + st + "/" + et,
+				HttpMethod.GET, entityNNIS, String.class);
+		String nnis = resp.getBody();
+
+		return nnis;
+	}
+	
+	@GetMapping("/QDVS/{caseno}/{st}/{et}")
+	public String QDVS(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
+			throws Exception {
+		trustAllHttpsCertificates();
+		HttpsURLConnection.setDefaultHostnameVerifier(hv);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
+		HttpEntity<String> entityNNIS = new HttpEntity<String>(headers);
+
+		ResponseEntity<String> resp = restTemplate.exchange(
+				"http://10.121.11.180:8080/NPIWS/service/Nnis/QDVS/NIMA/" + caseno + "/" + st + "/" + et,
+				HttpMethod.GET, entityNNIS, String.class);
+		String nnis = resp.getBody();
 
 		return nnis;
 	}
