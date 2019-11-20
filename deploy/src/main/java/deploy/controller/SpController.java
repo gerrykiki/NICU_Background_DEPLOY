@@ -1,8 +1,5 @@
 package deploy.controller;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.sql.DriverManager;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -31,7 +28,7 @@ public class SpController {
 
 	/*---SP---*/
 	@GetMapping("/ERDISP/{hisid}/{caseno}")
-	public List<String> ERDISP(@PathVariable String hisid,@PathVariable String caseno) {
+	public List<String> ERDISP(@PathVariable String hisid, @PathVariable String caseno) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -51,7 +48,7 @@ public class SpController {
 			cs.registerOutParameter(4, Types.VARCHAR);
 			cs.execute();
 			System.out.println("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
-			
+
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {
@@ -71,7 +68,7 @@ public class SpController {
 	}
 
 	@GetMapping("/DISDISP/{hisid}/{caseno}")
-	public List<String> DISDISP(@PathVariable String hisid,@PathVariable String caseno) {
+	public List<String> DISDISP(@PathVariable String hisid, @PathVariable String caseno) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -99,21 +96,19 @@ public class SpController {
 					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
 			}
-			
+
 			cs.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
 		}
 		return data;
 	}
 
 	@GetMapping("/ADMDISP/{hisid}/{caseno}")
-	public List<String> ADMDISP(@PathVariable String hisid,@PathVariable String caseno) {
+	public List<String> ADMDISP(@PathVariable String hisid, @PathVariable String caseno) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -138,7 +133,7 @@ public class SpController {
 
 			while (rs.next()) {
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) );
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
 			}
 
@@ -148,14 +143,12 @@ public class SpController {
 		} catch (Exception e) {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
 		}
 		return data;
 	}
 
 	@GetMapping("/PRGTXQRY/{date}/{hisid}/{caseno}")
-	public List<String> PRGTXQRY(@PathVariable String date,@PathVariable String hisid,@PathVariable String caseno) {
+	public List<String> PRGTXQRY(@PathVariable String date, @PathVariable String hisid, @PathVariable String caseno) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -181,7 +174,7 @@ public class SpController {
 
 			while (rs.next()) {
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) );
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
 			}
 
@@ -196,7 +189,8 @@ public class SpController {
 	}
 
 	@GetMapping("/RESSECT/{month}/{hisid}/{dpt}/{docid}")
-	public List<String> RESSECT(@PathVariable String month,@PathVariable String hisid,@PathVariable String dpt,@PathVariable String docid) {
+	public List<String> RESSECT(@PathVariable String month, @PathVariable String hisid, @PathVariable String dpt,
+			@PathVariable String docid) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -221,36 +215,26 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("RESSECT.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
-			//System.out.println("Meta --> " + rs.getMetaData());
-
 			while (rs.next()) {
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) );
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
 		}
 		return data;
 	}
 
 	@GetMapping("/RESDISP/{month}/{hisid}/{caseno}/{seq}")
-	public List<String> RESDISP(@PathVariable String month,@PathVariable String hisid,@PathVariable String caseno,@PathVariable Integer seq) {
+	public List<String> RESDISP(@PathVariable String month, @PathVariable String hisid, @PathVariable String caseno,
+			@PathVariable Integer seq) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -274,33 +258,25 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("RESDISP.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) );
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
 		}
 		return data;
 	}
 
 	@GetMapping("/ADMLIST/{hisid}/{docid}")
-	public List<String> ADMLIST(@PathVariable String hisid,@PathVariable String docid) {
+	public List<String> ADMLIST(@PathVariable String hisid, @PathVariable String docid) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -323,19 +299,13 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("ADMLIST.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {// 1~60
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) );
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
@@ -347,7 +317,7 @@ public class SpController {
 	}
 
 	@GetMapping("/DISLIST/{hisid}/{docid}")
-	public List<String> DISLIST(@PathVariable String hisid,@PathVariable String docid) {
+	public List<String> DISLIST(@PathVariable String hisid, @PathVariable String docid) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -370,19 +340,13 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("DISLIST.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {// 1~60
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
@@ -415,19 +379,13 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("DTAROTQ4.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {// 1~60
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) );
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
@@ -439,7 +397,7 @@ public class SpController {
 	}
 
 	@GetMapping("/DTASOAPQ/{hisid}/{date}/{dpt}")
-	public List<String> DTASOAPQ(@PathVariable String hisid,@PathVariable String date,@PathVariable String dpt) {
+	public List<String> DTASOAPQ(@PathVariable String hisid, @PathVariable String date, @PathVariable String dpt) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -462,33 +420,26 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("DTASOAPQ.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {// 1~60
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
 		}
 		return data;
 	}
 
 	@GetMapping("/ORDLIST/{hisid}/{date}/{dpt}/{docid}")
-	public List<String> ORDLIST(@PathVariable String hisid,@PathVariable String date,@PathVariable String dpt,@PathVariable String docid) {
+	public List<String> ORDLIST(@PathVariable String hisid, @PathVariable String date, @PathVariable String dpt,
+			@PathVariable String docid) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -513,19 +464,13 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("ORDLIST.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {// 1~60
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
@@ -537,7 +482,7 @@ public class SpController {
 	}
 
 	@GetMapping("/RESLAB01/{hisid}/{date}")
-	public List<String> RESLAB01(@PathVariable String hisid,@PathVariable String date) {
+	public List<String> RESLAB01(@PathVariable String hisid, @PathVariable String date) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -559,19 +504,13 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("RESLAB01.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
@@ -583,7 +522,7 @@ public class SpController {
 	}
 
 	@GetMapping("/RESLAB02/{hisid}/{date}")
-	public List<String> RESLAB02(@PathVariable String hisid,@PathVariable String date) {
+	public List<String> RESLAB02(@PathVariable String hisid, @PathVariable String date) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -597,27 +536,21 @@ public class SpController {
 
 			cs = (CallableStatement) conn.prepareCall("CALL VGHTPEVG.RESLAB02(?,?,?)");
 
-			cs.setString(1,hisid);
-			cs.setString(2,date);
+			cs.setString(1, hisid);
+			cs.setString(2, date);
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.execute();
 			System.out.println("Logger_info_1-->" + cs.getInt(3));
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("RESLAB02.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
@@ -629,7 +562,7 @@ public class SpController {
 	}
 
 	@GetMapping("/RESDGLU1/{hisid}/{date}")
-	public List<String> RESDGLU1(@PathVariable String hisid,@PathVariable String date) {
+	public List<String> RESDGLU1(@PathVariable String hisid, @PathVariable String date) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -651,19 +584,13 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("RESDGLU1.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {// 1~60
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
@@ -675,7 +602,7 @@ public class SpController {
 	}
 
 	@GetMapping("/RESDBGAS/{hisid}/{date}")
-	public List<String> RESDBGAS(@PathVariable String hisid,@PathVariable String date) {
+	public List<String> RESDBGAS(@PathVariable String hisid, @PathVariable String date) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -697,19 +624,13 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("RESDBGAS.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {// 1~60
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
@@ -721,7 +642,7 @@ public class SpController {
 	}
 
 	@GetMapping("/RESLAB0C/{hisid}/{date}")
-	public List<String> RESLAB0C(@PathVariable String hisid,@PathVariable String date) {
+	public List<String> RESLAB0C(@PathVariable String hisid, @PathVariable String date) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -743,19 +664,13 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("RESLAB0C.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {// 1~60
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
@@ -767,7 +682,7 @@ public class SpController {
 	}
 
 	@GetMapping("/TRTMNTQ1/{hisid}/{caseno}")
-	public List<String> TRTMNTQ1(@PathVariable String hisid,@PathVariable String caseno) {
+	public List<String> TRTMNTQ1(@PathVariable String hisid, @PathVariable String caseno) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -789,19 +704,13 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("TRTMNTQ1.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {// 1~60
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
@@ -813,7 +722,7 @@ public class SpController {
 	}
 
 	@GetMapping("/UDORDER0/{hisid}/{caseno}/{seq}")
-	public List<String> UDORDER0(@PathVariable String hisid,@PathVariable String caseno,@PathVariable String seq) {
+	public List<String> UDORDER0(@PathVariable String hisid, @PathVariable String caseno, @PathVariable String seq) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -837,33 +746,25 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("UDORDER0.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {// 1~60
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
 		}
 		return data;
 	}
 
 	@GetMapping("/UDTEXTQ1/{caseno}/{seq}")
-	public List<String> UDTEXTQ1(@PathVariable String caseno,@PathVariable String seq) {
+	public List<String> UDTEXTQ1(@PathVariable String caseno, @PathVariable String seq) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -885,33 +786,25 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("UDTEXTQ1.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {// 1~60
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
 		}
 		return data;
 	}
 
 	@GetMapping("/CPSLIST/{hisid}/{docid}")
-	public List<String> CPSLIST(@PathVariable String hisid,@PathVariable String docid) {
+	public List<String> CPSLIST(@PathVariable String hisid, @PathVariable String docid) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -934,33 +827,25 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("CPSLIST.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {// 1~60
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
 		}
 		return data;
 	}
 
 	@GetMapping("/CPSDISP/{hisid}/{caseno}/{seq}")
-	public List<String> CPSDISP(@PathVariable String hisid,@PathVariable String caseno,@PathVariable String seq) {
+	public List<String> CPSDISP(@PathVariable String hisid, @PathVariable String caseno, @PathVariable String seq) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -984,27 +869,19 @@ public class SpController {
 
 			rs = (ResultSet) cs.executeQuery();
 
-			File writename = new File("CPSDISP.txt");
-			writename.createNewFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-
 			while (rs.next()) {// 1~60
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i) + "\r\n");
+					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
 				}
-				out.flush();
 			}
 
-			out.close();
 			cs.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
-			logger.info("error:" + e.getMessage());
-			logger.info(e.toString());
 		}
 		return data;
 	}

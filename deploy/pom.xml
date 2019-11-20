@@ -92,14 +92,14 @@
 			<version>2.6</version>
 		</dependency>
 
-		<!-- SSO -->
+		<!-- SSO 
 		<dependency>
 			<groupId>sso.login</groupId>
 			<artifactId>sso.src.login</artifactId>
 			<scope>system</scope>
 			<version>1.0</version>
 			<systemPath>${basedir}/src/main/resources/lib/HGigaOAKsSSO.jar</systemPath>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<build>

@@ -70,7 +70,7 @@ public class NisController {
 	/*--ignore SSL--*/
 
 	/*---NIS---*/
-	@GetMapping("/QSPE/{caseno}/{st}/{et}")
+	@GetMapping("/QSPE/{caseno}/{st}/{et}")//查詢特定時間特殊事件資訊
 	public String QSPE(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
 			throws Exception {
 		trustAllHttpsCertificates();
@@ -88,7 +88,7 @@ public class NisController {
 		return nnis;
 	}
 	
-	@GetMapping("/QTWPER/{caseno}/{st}/{et}")
+	@GetMapping("/QTWPER/{caseno}/{st}/{et}")//查詢特定時間身高體重/體圍測量資訊
 	public String QTWPER(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
 			throws Exception {
 		trustAllHttpsCertificates();
@@ -106,7 +106,7 @@ public class NisController {
 		return nnis;
 	}
 	
-	@GetMapping("/QPNOT/{caseno}/{st}/{et}")
+	@GetMapping("/QPNOT/{caseno}/{st}/{et}")//查詢特定時間護理紀錄資訊
 	public String QPNOT(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
 			throws Exception {
 		trustAllHttpsCertificates();
@@ -124,7 +124,7 @@ public class NisController {
 		return nnis;
 	}
 	
-	@GetMapping("/QDVS/{caseno}/{st}/{et}")
+	@GetMapping("/QDVS/{caseno}/{st}/{et}")//查詢特定時間生命徵象資訊
 	public String QDVS(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
 			throws Exception {
 		trustAllHttpsCertificates();
@@ -136,6 +136,42 @@ public class NisController {
 
 		ResponseEntity<String> resp = restTemplate.exchange(
 				"http://10.121.11.180:8080/NPIWS/service/Nnis/QDVS/NIMA/" + caseno + "/" + st + "/" + et,
+				HttpMethod.GET, entityNNIS, String.class);
+		String nnis = resp.getBody();
+
+		return nnis;
+	}
+	
+	@GetMapping("/QOXY/{caseno}/{st}/{et}")//查詢特定時間氧合紀錄資訊
+	public String QOXY(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
+			throws Exception {
+		trustAllHttpsCertificates();
+		HttpsURLConnection.setDefaultHostnameVerifier(hv);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
+		HttpEntity<String> entityNNIS = new HttpEntity<String>(headers);
+
+		ResponseEntity<String> resp = restTemplate.exchange(
+				"http://10.121.11.180:8080/NPIWS/service/Nnis/QOXY/NIMA/" + caseno + "/" + st + "/" + et,
+				HttpMethod.GET, entityNNIS, String.class);
+		String nnis = resp.getBody();
+
+		return nnis;
+	}
+	
+	@GetMapping("/QDC/{caseno}/{st}/{et}")//輸出入量(兒)
+	public String QDC(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
+			throws Exception {
+		trustAllHttpsCertificates();
+		HttpsURLConnection.setDefaultHostnameVerifier(hv);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
+		HttpEntity<String> entityNNIS = new HttpEntity<String>(headers);
+
+		ResponseEntity<String> resp = restTemplate.exchange(
+				"http://10.121.11.180:8080/NPIWS/service/Nnis/QDC/NIMA/" + caseno + "/" + st + "/" + et,
 				HttpMethod.GET, entityNNIS, String.class);
 		String nnis = resp.getBody();
 

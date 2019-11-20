@@ -8,21 +8,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+public class SocketTest extends Thread {
 
-public class SocketTest /* extends Thread */ {
+	int SOCKET_PORT = 9000;
+	String SERVER = "10.100.83.150";
+	String FILE = "CenterM3150.txt";
 
-	public void tcpp() {
-		int SOCKET_PORT = 9000;
-		String SERVER = "10.100.83.150";
-		String FILE = "CenterM3150.txt";
-		Logger logger = LoggerFactory.getLogger(this.getClass());
-		Socket client = null;
-		Socket socket = null;
-		ServerSocket server;
+	Socket client = null;
+	Socket socket = null;
+	ServerSocket server;
 
-		// public SocketTest() {
+	public SocketTest() {
 		try {
 			client = new Socket(SERVER, SOCKET_PORT);
 			// server = new ServerSocket(5556);
@@ -31,14 +27,14 @@ public class SocketTest /* extends Thread */ {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// }
+	}
 
-		// public void run() {
+	public void run() {
 		BufferedInputStream in;
 		BufferedOutputStream ToMe;
 		BufferedOutputStream ToFrontend;
 
-		logger.info("TCP已連線 !");
+		System.out.println("TCP已連線 !");
 
 		byte[] mybytearray = new byte[1024];
 		int len = 0;
@@ -64,13 +60,13 @@ public class SocketTest /* extends Thread */ {
 				ToMe.write(mybytearray, 0, len);
 				ToMe.flush();
 
-				logger.info("我取得的值:\n" + data);
+				System.out.println("我取得的值:\n" + data);
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		// }
 	}
+
 }
