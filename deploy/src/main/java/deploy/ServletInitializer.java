@@ -9,8 +9,8 @@ public class ServletInitializer extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		Thread th = new SocketTest();
-		th.start();
+		//Thread th = new SocketTest();
+		//th.start();
 		return application.sources(DeployApplication.class);
 	}
 

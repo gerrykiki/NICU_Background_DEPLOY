@@ -1,22 +1,20 @@
 package deploy.model;
 
-import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.NamedStoredProcedureQueries;
-import javax.persistence.NamedStoredProcedureQuery;
-
-//import com.ibm.db2.cmx.annotation.Table;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Entity
-//@Table(name = "HBED")
+@Table
 @Data
 @AllArgsConstructor
-@NamedStoredProcedureQueries({
-		@NamedStoredProcedureQuery(name = "HBED", procedureName = "HBED", resultClasses = { Hbed.class }) })
-public class Hbed implements Serializable {
-
+public class Hbed {
+	private String HBNURSTA;
+	private String  HBEDNO;
+	private String  PCASENO;
+	@PrimaryKey
+	private String PHISTNUM;
+	private String PNAMEC;
+	private String PSEX;
 }
