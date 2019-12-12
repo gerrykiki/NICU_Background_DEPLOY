@@ -3,6 +3,7 @@ package deploy.controller;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,12 +32,13 @@ public class TableController {
 
 	/*-Get DB table data-*/
 	@GetMapping("/PBASINFO/{PHISTNUM}")
-	public List<String> PBASINFO(@PathVariable String PHISTNUM) {
+	public List<Object> PBASINFO(@PathVariable String PHISTNUM) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		Statement st;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
+		
 
 		System.setProperty("db2.jcc.charsetDecoderEncoder", "3");
 
@@ -50,9 +52,11 @@ public class TableController {
 			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.PBASINFO WHERE PHISTNUM='" + PHISTNUM + "'");
 
 			while (rs.next()) {
+				Map<Object, Object> mm = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					data.add(rs.getMetaData().getColumnName(i) + ":" + rs.getString(i));
+					mm.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(mm);
 			}
 
 			st.close();
@@ -69,14 +73,12 @@ public class TableController {
 	HbedRepository hbedRepository;
 
 	@GetMapping("/HBED")
-	public List<String> HBED() {
+	public List<Object> HBED() {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		Statement st;
-		List<String> data = new ArrayList<String>();
-		Map<Object, Object> m2 = new HashMap<>();
-		Map<Object, Object> mm = new HashMap<>();
+		List<Object> data = new ArrayList<Object>();		
 
 		System.setProperty("db2.jcc.charsetDecoderEncoder", "3");
 
@@ -90,21 +92,21 @@ public class TableController {
 			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.HBED WHERE HBNURSTA='NICU'");
 
 			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					// data.add(rs.getMetaData().getColumnName(i) + ":" + rs.getString(i);
-					mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 
-				data.add("HBNURSTA:" + mm.get("HBNURSTA").toString());
-				data.add("HBEDNO:" + mm.get("HBEDNO").toString());
-				data.add("PCASENO:" + mm.get("PCASENO").toString());
-				data.add("PHISTNUM" + mm.get("PHISTNUM").toString());
-				data.add("PNAMEC:" + mm.get("PNAMEC").toString());
-				data.add("PSEX:" + mm.get("PSEX").toString());
-				data.add(" ");
-				Hbed h = new Hbed(mm.get("HBNURSTA").toString(), mm.get("HBEDNO").toString(),
-						mm.get("PCASENO").toString(), mm.get("PHISTNUM").toString(), mm.get("PNAMEC").toString(),
-						mm.get("PSEX").toString());
+				List<Map<Object, Object>> plocobject = PLOC(filter.get("PCASENO"));
+                Collections.reverse(plocobject);
+                Map<Object, Object> plocdata = plocobject.get(0);
+                String transintime =  (String) plocdata.get("PLOCDT") + (String) plocdata.get("PLOCTM");
+                String transinid = "NICU" + (String) plocdata.get("PLOCDT") + (String) plocdata.get("PLOCTM");
+
+                data.add(filter);
+				Hbed h = new Hbed(filter.get("PCASENO").toString(), filter.get("PHISTNUM").toString(),
+						filter.get("PNAMEC").toString(), filter.get("PSEX").toString(), transintime,
+						transinid);
 				hbedRepository.save(h);
 			}
 
@@ -119,12 +121,13 @@ public class TableController {
 	}
 
 	@GetMapping("/PLOC/{PCASENO}")
-	public List<String> PLOC(@PathVariable String PCASENO) {
+	public List<Map<Object, Object>> PLOC(@PathVariable Object PCASENO) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		Statement st;
-		List<String> data = new ArrayList<String>();
+		List<Map<Object, Object>> data = new ArrayList<Map<Object, Object>>();
+		
 
 		System.setProperty("db2.jcc.charsetDecoderEncoder", "3");
 
@@ -138,9 +141,12 @@ public class TableController {
 			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.PLOC WHERE PCASENO='" + PCASENO + "'");
 
 			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					data.add(rs.getMetaData().getColumnName(i) + ":" + rs.getString(i));
+					//data.add(rs.getMetaData().getColumnName(i) + ":" + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			st.close();
@@ -154,12 +160,12 @@ public class TableController {
 	}
 
 	@GetMapping("/PDOCNEW/{PCASENO}")
-	public List<String> PDOCNEW(@PathVariable String PCASENO) {
+	public List<Object> PDOCNEW(@PathVariable String PCASENO) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		Statement st;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		System.setProperty("db2.jcc.charsetDecoderEncoder", "3");
 
@@ -173,9 +179,11 @@ public class TableController {
 			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.PDOCNEW WHERE PCASENO='" + PCASENO + "'");
 
 			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					data.add(rs.getMetaData().getColumnName(i) + ":" + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			st.close();

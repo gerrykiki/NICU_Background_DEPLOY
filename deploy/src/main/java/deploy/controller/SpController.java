@@ -3,7 +3,9 @@ package deploy.controller;
 import java.sql.DriverManager;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,12 +30,12 @@ public class SpController {
 
 	/*---SP---*/
 	@GetMapping("/ERDISP/{hisid}/{caseno}")
-	public List<String> ERDISP(@PathVariable String hisid, @PathVariable String caseno) {
+	public List<Object> ERDISP(@PathVariable String hisid, @PathVariable String caseno) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -52,9 +54,11 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -68,12 +72,12 @@ public class SpController {
 	}
 
 	@GetMapping("/DISDISP/{hisid}/{caseno}")
-	public List<String> DISDISP(@PathVariable String hisid, @PathVariable String caseno) {
+	public List<Object> DISDISP(@PathVariable String hisid, @PathVariable String caseno) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -92,9 +96,11 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -108,12 +114,12 @@ public class SpController {
 	}
 
 	@GetMapping("/ADMDISP/{hisid}/{caseno}")
-	public List<String> ADMDISP(@PathVariable String hisid, @PathVariable String caseno) {
+	public List<Object> ADMDISP(@PathVariable String hisid, @PathVariable String caseno) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -132,9 +138,11 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -148,12 +156,12 @@ public class SpController {
 	}
 
 	@GetMapping("/PRGTXQRY/{date}/{hisid}/{caseno}")
-	public List<String> PRGTXQRY(@PathVariable String date, @PathVariable String hisid, @PathVariable String caseno) {
+	public List<Object> PRGTXQRY(@PathVariable String date, @PathVariable String hisid, @PathVariable String caseno) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -173,9 +181,11 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -189,13 +199,13 @@ public class SpController {
 	}
 
 	@GetMapping("/RESSECT/{month}/{hisid}/{dpt}/{docid}")
-	public List<String> RESSECT(@PathVariable String month, @PathVariable String hisid, @PathVariable String dpt,
+	public List<Object> RESSECT(@PathVariable String month, @PathVariable String hisid, @PathVariable String dpt,
 			@PathVariable String docid) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -216,10 +226,12 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -233,13 +245,13 @@ public class SpController {
 	}
 
 	@GetMapping("/RESDISP/{month}/{hisid}/{caseno}/{seq}")
-	public List<String> RESDISP(@PathVariable String month, @PathVariable String hisid, @PathVariable String caseno,
+	public List<Object> RESDISP(@PathVariable String month, @PathVariable String hisid, @PathVariable String caseno,
 			@PathVariable Integer seq) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -259,10 +271,12 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -276,12 +290,12 @@ public class SpController {
 	}
 
 	@GetMapping("/ADMLIST/{hisid}/{docid}")
-	public List<String> ADMLIST(@PathVariable String hisid, @PathVariable String docid) {
+	public List<Object> ADMLIST(@PathVariable String hisid, @PathVariable String docid) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -300,10 +314,12 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -317,12 +333,12 @@ public class SpController {
 	}
 
 	@GetMapping("/DISLIST/{hisid}/{docid}")
-	public List<String> DISLIST(@PathVariable String hisid, @PathVariable String docid) {
+	public List<Object> DISLIST(@PathVariable String hisid, @PathVariable String docid) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -341,10 +357,12 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -358,12 +376,12 @@ public class SpController {
 	}
 
 	@GetMapping("/DTAROTQ4/{hisid}")
-	public List<String> DTAROTQ4(@PathVariable String hisid) {
+	public List<Object> DTAROTQ4(@PathVariable String hisid) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -380,10 +398,12 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i),rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -397,12 +417,12 @@ public class SpController {
 	}
 
 	@GetMapping("/DTASOAPQ/{hisid}/{date}/{dpt}")
-	public List<String> DTASOAPQ(@PathVariable String hisid, @PathVariable String date, @PathVariable String dpt) {
+	public List<Object> DTASOAPQ(@PathVariable String hisid, @PathVariable String date, @PathVariable String dpt) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -421,10 +441,12 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -438,13 +460,13 @@ public class SpController {
 	}
 
 	@GetMapping("/ORDLIST/{hisid}/{date}/{dpt}/{docid}")
-	public List<String> ORDLIST(@PathVariable String hisid, @PathVariable String date, @PathVariable String dpt,
+	public List<Object> ORDLIST(@PathVariable String hisid, @PathVariable String date, @PathVariable String dpt,
 			@PathVariable String docid) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -465,10 +487,12 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -482,12 +506,12 @@ public class SpController {
 	}
 
 	@GetMapping("/RESLAB01/{hisid}/{date}")
-	public List<String> RESLAB01(@PathVariable String hisid, @PathVariable String date) {
+	public List<Object> RESLAB01(@PathVariable String hisid, @PathVariable String date) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -505,10 +529,12 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -522,12 +548,12 @@ public class SpController {
 	}
 
 	@GetMapping("/RESLAB02/{hisid}/{date}")
-	public List<String> RESLAB02(@PathVariable String hisid, @PathVariable String date) {
+	public List<Object> RESLAB02(@PathVariable String hisid, @PathVariable String date) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -545,10 +571,12 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -562,12 +590,12 @@ public class SpController {
 	}
 
 	@GetMapping("/RESDGLU1/{hisid}/{date}")
-	public List<String> RESDGLU1(@PathVariable String hisid, @PathVariable String date) {
+	public List<Object> RESDGLU1(@PathVariable String hisid, @PathVariable String date) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -585,10 +613,12 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -602,12 +632,12 @@ public class SpController {
 	}
 
 	@GetMapping("/RESDBGAS/{hisid}/{date}")
-	public List<String> RESDBGAS(@PathVariable String hisid, @PathVariable String date) {
+	public List<Object> RESDBGAS(@PathVariable String hisid, @PathVariable String date) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -625,10 +655,12 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -642,12 +674,12 @@ public class SpController {
 	}
 
 	@GetMapping("/RESLAB0C/{hisid}/{date}")
-	public List<String> RESLAB0C(@PathVariable String hisid, @PathVariable String date) {
+	public List<Object> RESLAB0C(@PathVariable String hisid, @PathVariable String date) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -665,10 +697,12 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -682,12 +716,12 @@ public class SpController {
 	}
 
 	@GetMapping("/TRTMNTQ1/{hisid}/{caseno}")
-	public List<String> TRTMNTQ1(@PathVariable String hisid, @PathVariable String caseno) {
+	public List<Object> TRTMNTQ1(@PathVariable String hisid, @PathVariable String caseno) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -705,10 +739,12 @@ public class SpController {
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -722,12 +758,12 @@ public class SpController {
 	}
 
 	@GetMapping("/UDORDER0/{hisid}/{caseno}/{seq}")
-	public List<String> UDORDER0(@PathVariable String hisid, @PathVariable String caseno, @PathVariable String seq) {
+	public List<Object> UDORDER0(@PathVariable String hisid, @PathVariable String caseno, @PathVariable String seq) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -742,15 +778,17 @@ public class SpController {
 			cs.registerOutParameter(4, Types.INTEGER);
 			cs.registerOutParameter(5, Types.VARCHAR);
 			cs.execute();
-			System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" + cs.getString(5));
+			//System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" + cs.getString(5));
 
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -764,12 +802,12 @@ public class SpController {
 	}
 
 	@GetMapping("/UDTEXTQ1/{caseno}/{seq}")
-	public List<String> UDTEXTQ1(@PathVariable String caseno, @PathVariable String seq) {
+	public List<Object> UDTEXTQ1(@PathVariable String caseno, @PathVariable String seq) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -782,15 +820,17 @@ public class SpController {
 			cs.setString(2, seq);
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.execute();
-			System.out.println("Logger_info_1-->" + cs.getInt(3));
+			//System.out.println("Logger_info_1-->" + cs.getInt(3));
 
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -804,12 +844,12 @@ public class SpController {
 	}
 
 	@GetMapping("/CPSLIST/{hisid}/{docid}")
-	public List<String> CPSLIST(@PathVariable String hisid, @PathVariable String docid) {
+	public List<Object> CPSLIST(@PathVariable String hisid, @PathVariable String docid) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -823,15 +863,17 @@ public class SpController {
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.registerOutParameter(4, Types.VARCHAR);
 			cs.execute();
-			System.out.println("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
+			//System.out.println("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
 
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) ,rs.getString(i));
 				}
+				data.add(filter);
 			}
 
 			cs.close();
@@ -845,12 +887,12 @@ public class SpController {
 	}
 
 	@GetMapping("/CPSDISP/{hisid}/{caseno}/{seq}")
-	public List<String> CPSDISP(@PathVariable String hisid, @PathVariable String caseno, @PathVariable String seq) {
+	public List<Object> CPSDISP(@PathVariable String hisid, @PathVariable String caseno, @PathVariable String seq) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		CallableStatement cs;
-		List<String> data = new ArrayList<String>();
+		List<Object> data = new ArrayList<Object>();
 
 		try {
 			Class.forName(driver).newInstance();
@@ -865,15 +907,61 @@ public class SpController {
 			cs.registerOutParameter(4, Types.INTEGER);
 			cs.registerOutParameter(5, Types.VARCHAR);
 			cs.execute();
-			System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" + cs.getString(5));
+			//System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" + cs.getString(5));
 
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					data.add(rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
 				}
+				data.add(filter);
+			}
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("error:" + e.getMessage());
+			System.out.println(e.toString());
+		}
+		return data;
+	}
+	
+	@GetMapping("/PCASELIST/{hisid}/{docid}/{ttype}")
+	public List<Object> PCASELIST(@PathVariable String hisid, @PathVariable String docid, @PathVariable String ttype) {
+
+		Connection conn = null;
+		ResultSet rs = null;
+		CallableStatement cs;
+		List<Object> data = new ArrayList<Object>();
+
+		try {
+			Class.forName(driver).newInstance();
+
+			conn = (Connection) DriverManager.getConnection(url, userName, passWord);
+
+			cs = (CallableStatement) conn.prepareCall("CALL VGHTPEVG.PCASLIST(?,?,?,?,?)");
+
+			cs.setString(1, hisid);
+			cs.setString(2, docid);
+			cs.setString(3, ttype);
+			cs.registerOutParameter(4, Types.INTEGER);
+			cs.registerOutParameter(5, Types.VARCHAR);
+			cs.execute();
+			//System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" + cs.getString(5));
+
+			rs = (ResultSet) cs.executeQuery();
+
+			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+				}
+				data.add(filter);
 			}
 
 			cs.close();

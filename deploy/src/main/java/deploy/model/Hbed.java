@@ -6,15 +6,16 @@ import org.springframework.data.cassandra.core.mapping.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Table
+@Table("patient")
 @Data
 @AllArgsConstructor
 public class Hbed {
-	private String HBNURSTA;
-	private String  HBEDNO;
-	private String  PCASENO;
+	
 	@PrimaryKey
-	private String PHISTNUM;
-	private String PNAMEC;
-	private String PSEX;
+	private String caseid;
+	private String  hisid;
+	private String  pnamec;	
+	private String psex;
+	private String transintime;
+	private String transinid;
 }
