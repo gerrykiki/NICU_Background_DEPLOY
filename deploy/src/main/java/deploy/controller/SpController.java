@@ -1016,7 +1016,7 @@ public class SpController {
 	
 	
 	
-	@GetMapping("/UDORDER0/{hisid}/{caseno}/{seq}")
+	@GetMapping("/WARDFLAG/{hisid}/{caseno}/{seq}")
 	public Map<Object, Object> WARDFLAGDATALIST(@PathVariable String hisid, @PathVariable String caseno,
 			@PathVariable String seq) {
 

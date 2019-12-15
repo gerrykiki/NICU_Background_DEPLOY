@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ibm.db2.jcc.am.Connection;
 import com.ibm.db2.jcc.am.ResultSet;
 
-import deploy.model.Hbed;
-import deploy.model.HbedRepository;
+import deploy.model.Patient;
+import deploy.Repository.PatientRepository;
 
 @RestController
 public class TableController {
@@ -32,6 +32,9 @@ public class TableController {
 	String userName = "XVGH96";
 	String passWord = "nicuteam";
 
+	@Autowired
+	PatientRepository patientrepository;
+	
 	/*-Get DB table data-*/
 	@GetMapping("/PBASINFO/{PHISTNUM}")
 	public Map<Object, Object> PBASINFO(@PathVariable String PHISTNUM) {
@@ -39,7 +42,7 @@ public class TableController {
 		Connection conn = null;
 		ResultSet rs = null;
 		Statement st;
-//		List<Object> data = new ArrayList<Object>();
+		// List<Object> data = new ArrayList<Object>();
 		Map<Object, Object> mm = new HashMap<>();
 		System.setProperty("db2.jcc.charsetDecoderEncoder", "3");
 
@@ -62,7 +65,7 @@ public class TableController {
 						mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 					}
 				}
-//				data.add(mm);
+				// data.add(mm);
 			}
 
 			st.close();
@@ -75,8 +78,14 @@ public class TableController {
 		return mm;
 	}
 
-	@Autowired
-	HbedRepository hbedRepository;
+
+	@GetMapping("/Table/TEST") // 查詢特定時間身高體重/體圍測量資訊
+	public List<Map<Object, Object>> NISTEST() throws Exception {
+
+		NisController nis = new NisController();
+		List<Map<Object, Object>> data = nis.NISTEST();
+		return data;
+	}
 
 	@GetMapping("/HBED")
 	public List<Object> HBED() {
@@ -96,7 +105,7 @@ public class TableController {
 			st = (Statement) conn.createStatement();
 
 			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.HBED WHERE HBNURSTA='NICU'");
-//			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.HBED");
+			// rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.HBED");
 			while (rs.next()) {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
@@ -121,16 +130,26 @@ public class TableController {
 				String ppblood = (String) pbasigninfo.get("PPBLOOD");
 				filter.put("PBIRTHDT", birthday);
 				filter.put("PPBLOOD", ppblood);
-				data.add(filter);
+
+				NisController nis = new NisController();
+				List<Map<Object, Object>> birweeks = nis.QMNC((String) filter.get("PCASENO"));
+				Map<Object, Object> birweeksmap = birweeks.get(0);
+				String days_birth = (String) birweeksmap.get("days");
+				String weeks_birth = (String) birweeksmap.get("weeks");
+				String weeks_days_birth = "[" + weeks_birth + "+" + days_birth +"]";
+				filter.put("weeks_days_birth", weeks_days_birth);
+
 
 				List<Map<Object, Object>> plocobject = PLOC(filter.get("PCASENO"));
 				Collections.reverse(plocobject);
 				Map<Object, Object> plocdata = plocobject.get(0);
 				String transintime = (String) plocdata.get("PLOCDT") + (String) plocdata.get("PLOCTM");
 				String transinid = "NICU" + (String) plocdata.get("PLOCDT") + (String) plocdata.get("PLOCTM");
-				Hbed h = new Hbed(filter.get("PCASENO").toString(), filter.get("PHISTNUM").toString(),
+				Patient h = new Patient(filter.get("PCASENO").toString(), filter.get("PHISTNUM").toString(),
 						filter.get("PNAMEC").toString(), filter.get("PSEX").toString(), transintime, transinid);
-				hbedRepository.save(h);
+				patientrepository.save(h);
+				data.add(filter); 
+
 			}
 
 			st.close();
@@ -203,14 +222,14 @@ public class TableController {
 			while (rs.next()) {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					if(rs.getMetaData().getColumnName(i).compareTo("PDTYPE") == 0) {
-						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));			
+					if (rs.getMetaData().getColumnName(i).compareTo("PDTYPE") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 					}
-					if(rs.getMetaData().getColumnName(i).compareTo("PDMDNO") == 0) {
-						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));			
+					if (rs.getMetaData().getColumnName(i).compareTo("PDMDNO") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 					}
-					if(rs.getMetaData().getColumnName(i).compareTo("PDDOCNMC") == 0) {
-						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));			
+					if (rs.getMetaData().getColumnName(i).compareTo("PDDOCNMC") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 					}
 				}
 				data.add(filter);

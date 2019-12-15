@@ -130,6 +130,17 @@ public class NisController {
 		return data;
 	}
 
+
+	@GetMapping("/TEST") // 查詢特定時間身高體重/體圍測量資訊
+	public List<Map<Object, Object>> NISTEST() throws Exception {
+
+		List<Map<Object, Object>> data = new ArrayList<Map<Object, Object>>();
+		Map<Object, Object> filter = new HashMap<>();
+		filter.put("key", "TEST");
+		data.add(filter);
+		return data;
+	}
+	
 	@GetMapping("/QTWPER/{caseno}/{st}/{et}") // 查詢特定時間身高體重/體圍測量資訊
 	public List<Map<Object, Object>> QTWPER(@PathVariable String caseno, @PathVariable String st,
 			@PathVariable String et) throws Exception {

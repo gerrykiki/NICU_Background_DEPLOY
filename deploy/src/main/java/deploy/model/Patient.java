@@ -9,7 +9,7 @@ import lombok.Data;
 @Table("patient")
 @Data
 @AllArgsConstructor
-public class Hbed {
+public class Patient {
 	
 	@PrimaryKey
 	private String caseid;
