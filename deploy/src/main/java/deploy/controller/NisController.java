@@ -176,6 +176,7 @@ public class NisController {
 		return data;
 	}
 
+		
 	@GetMapping("/QPNOT/{caseno}/{st}/{et}") // 查詢特定時間護理紀錄資訊
 	public List<Map<Object, Object>> QPNOT(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
 			throws Exception {

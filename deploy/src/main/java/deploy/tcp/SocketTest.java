@@ -3,12 +3,15 @@ package deploy.tcp;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.HashMap;
 
 import com.datastax.driver.core.Cluster;
@@ -27,8 +30,10 @@ import ca.uhn.hl7v2.model.v23.segment.PID;
 import ca.uhn.hl7v2.model.v23.segment.PV1;
 import ca.uhn.hl7v2.parser.Parser;
 
+
 public class SocketTest extends Thread {
 
+	private static HapiContext context = new DefaultHapiContext();
 	int SOCKET_PORT = 9000;
 	String SERVER = "10.100.83.150";
 	String FILE = "CenterM3150.txt";
@@ -59,9 +64,7 @@ public class SocketTest extends Thread {
 
 		System.out.println("TCP已連線 !");
 
-		byte[] mybytearray = new byte[1024];
-		int len = 0;
-		String data = "";
+
 
 		try {
 			// socket = server.accept();
@@ -73,16 +76,17 @@ public class SocketTest extends Thread {
 			// ToFrontend = new BufferedOutputStream(socket.getOutputStream());
 
 			in = new BufferedInputStream(client.getInputStream());
-
+			int numByte = in.available();
+			byte[] mybytearray = new byte[10240];
+			
+			int len = 0;
+			String data = "";
 			while ((len = in.read(mybytearray, 0, mybytearray.length)) > 0) {
-				data = new String(mybytearray, 0, len);
-				String hl7string = data.substring(2, data.length()-3);
-				/*int i = data.indexOf("VT");
-				String hl7_1 = data.substring(0,i);
-				int j = hl7_1.indexOf("FS");
-				String hl7_2 = data.substring(0,j);*/
-				
-				System.out.println("LOGLOGLOG - >"+hl7string);
+				data = new String(mybytearray);
+//				Parser parser = context.getPipeParser();
+//				string responseString = parser.encode(data);
+//				data = data.replaceAll("\+", "\\");
+//				String newdata = data.replace("", "\\");
 
 				// ToFrontend.write(mybytearray, 0, len);
 				// ToFrontend.flush();
@@ -95,7 +99,7 @@ public class SocketTest extends Thread {
 				// ToMe.write(mybytearray, 0, len);
 				// ToMe.flush();
 
-				// System.out.println("我取得的值:\n" + data);
+				System.out.println("我取得的值:\n" + data);
 			}
 
 		} catch (IOException e) {
@@ -104,16 +108,16 @@ public class SocketTest extends Thread {
 
 	}
 
+	
+	
 	public void parser(String msg) throws Exception {
 		HapiContext context = new DefaultHapiContext();
 
-		Parser p = context.getGenericParser();
+		Parser p = context.getPipeParser();
 
 		Message hapiMsg;
 		try {
-			System.out.println("MMMSSSGGG"+msg);
 			hapiMsg = p.parse(msg);
-			System.out.println("HHHAAAPPII"+hapiMsg);
 			try {
 				ORU_R01 oruMsg = (ORU_R01) hapiMsg;
 
@@ -239,7 +243,8 @@ public class SocketTest extends Thread {
 
 				DateTimeFormatter originalFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 				LocalDateTime ldt = LocalDateTime.parse(date, originalFormat);
-
+                System.out.println(ldt);
+                System.out.println(HISID);
 				StringBuilder sb = new StringBuilder("INSERT INTO ").append("centermonitor")
 						.append("(time,phistnum,hr,sp,rr,bt,abp_s,abp_d,abp_m,nbp_s,nbp_d,nbp_m) ").append("VALUES('")
 						.append(ldt).append("', '").append(HISID).append("',").append(HR).append(", ").append(SpO2)

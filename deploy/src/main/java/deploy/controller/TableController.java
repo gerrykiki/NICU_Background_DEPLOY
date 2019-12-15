@@ -2,8 +2,10 @@ package deploy.controller;
 
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,14 +34,13 @@ public class TableController {
 
 	/*-Get DB table data-*/
 	@GetMapping("/PBASINFO/{PHISTNUM}")
-	public List<Object> PBASINFO(@PathVariable String PHISTNUM) {
+	public Map<Object, Object> PBASINFO(@PathVariable String PHISTNUM) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		Statement st;
-		List<Object> data = new ArrayList<Object>();
-		
-
+//		List<Object> data = new ArrayList<Object>();
+		Map<Object, Object> mm = new HashMap<>();
 		System.setProperty("db2.jcc.charsetDecoderEncoder", "3");
 
 		try {
@@ -52,11 +53,16 @@ public class TableController {
 			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.PBASINFO WHERE PHISTNUM='" + PHISTNUM + "'");
 
 			while (rs.next()) {
-				Map<Object, Object> mm = new HashMap<>();
+
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					mm.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					if (rs.getMetaData().getColumnName(i).compareTo("PBIRTHDT") == 0) {
+						mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if (rs.getMetaData().getColumnName(i).compareTo("PPBLOOD") == 0) {
+						mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
 				}
-				data.add(mm);
+//				data.add(mm);
 			}
 
 			st.close();
@@ -66,7 +72,7 @@ public class TableController {
 			System.out.println("error:" + e.getMessage());
 			System.out.println(e.toString());
 		}
-		return data;
+		return mm;
 	}
 
 	@Autowired
@@ -78,7 +84,7 @@ public class TableController {
 		Connection conn = null;
 		ResultSet rs = null;
 		Statement st;
-		List<Object> data = new ArrayList<Object>();		
+		List<Object> data = new ArrayList<Object>();
 
 		System.setProperty("db2.jcc.charsetDecoderEncoder", "3");
 
@@ -90,23 +96,40 @@ public class TableController {
 			st = (Statement) conn.createStatement();
 
 			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.HBED WHERE HBNURSTA='NICU'");
-
+//			rs = (ResultSet) st.executeQuery("SELECT * FROM VGHTPEVG.HBED");
 			while (rs.next()) {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					if (rs.getMetaData().getColumnName(i).compareTo("HBEDNO") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if (rs.getMetaData().getColumnName(i).compareTo("PCASENO") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if (rs.getMetaData().getColumnName(i).compareTo("PHISTNUM") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if (rs.getMetaData().getColumnName(i).compareTo("PNAMEC") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if (rs.getMetaData().getColumnName(i).compareTo("PSEX") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
 				}
+				Map<Object, Object> pbasigninfo = PBASINFO((String) filter.get("PHISTNUM"));
+				String birthday = (String) pbasigninfo.get("PBIRTHDT");
+				String ppblood = (String) pbasigninfo.get("PPBLOOD");
+				filter.put("PBIRTHDT", birthday);
+				filter.put("PPBLOOD", ppblood);
+				data.add(filter);
 
 				List<Map<Object, Object>> plocobject = PLOC(filter.get("PCASENO"));
-                Collections.reverse(plocobject);
-                Map<Object, Object> plocdata = plocobject.get(0);
-                String transintime =  (String) plocdata.get("PLOCDT") + (String) plocdata.get("PLOCTM");
-                String transinid = "NICU" + (String) plocdata.get("PLOCDT") + (String) plocdata.get("PLOCTM");
-
-                data.add(filter);
+				Collections.reverse(plocobject);
+				Map<Object, Object> plocdata = plocobject.get(0);
+				String transintime = (String) plocdata.get("PLOCDT") + (String) plocdata.get("PLOCTM");
+				String transinid = "NICU" + (String) plocdata.get("PLOCDT") + (String) plocdata.get("PLOCTM");
 				Hbed h = new Hbed(filter.get("PCASENO").toString(), filter.get("PHISTNUM").toString(),
-						filter.get("PNAMEC").toString(), filter.get("PSEX").toString(), transintime,
-						transinid);
+						filter.get("PNAMEC").toString(), filter.get("PSEX").toString(), transintime, transinid);
 				hbedRepository.save(h);
 			}
 
@@ -127,7 +150,6 @@ public class TableController {
 		ResultSet rs = null;
 		Statement st;
 		List<Map<Object, Object>> data = new ArrayList<Map<Object, Object>>();
-		
 
 		System.setProperty("db2.jcc.charsetDecoderEncoder", "3");
 
@@ -143,7 +165,7 @@ public class TableController {
 			while (rs.next()) {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					//data.add(rs.getMetaData().getColumnName(i) + ":" + rs.getString(i));
+					// data.add(rs.getMetaData().getColumnName(i) + ":" + rs.getString(i));
 					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
@@ -181,7 +203,15 @@ public class TableController {
 			while (rs.next()) {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					if(rs.getMetaData().getColumnName(i).compareTo("PDTYPE") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));			
+					}
+					if(rs.getMetaData().getColumnName(i).compareTo("PDMDNO") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));			
+					}
+					if(rs.getMetaData().getColumnName(i).compareTo("PDDOCNMC") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));			
+					}
 				}
 				data.add(filter);
 			}

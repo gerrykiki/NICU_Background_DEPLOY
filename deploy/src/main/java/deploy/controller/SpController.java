@@ -56,7 +56,7 @@ public class SpController {
 			while (rs.next()) {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -98,7 +98,7 @@ public class SpController {
 			while (rs.next()) {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -140,7 +140,7 @@ public class SpController {
 			while (rs.next()) {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -183,7 +183,7 @@ public class SpController {
 			while (rs.next()) {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -229,7 +229,7 @@ public class SpController {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -273,8 +273,15 @@ public class SpController {
 			while (rs.next()) {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					if(rs.getMetaData().getColumnName(i).compareTo("DDATEIN") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if(rs.getMetaData().getColumnName(i).compareTo("DDISSECT") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if(rs.getMetaData().getColumnName(i).compareTo("DDATEOUT") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
 				}
 				data.add(filter);
 			}
@@ -316,8 +323,13 @@ public class SpController {
 			while (rs.next()) {// 1~60
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+//					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
+					if(rs.getMetaData().getColumnName(i).compareTo("ADIDATE") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if(rs.getMetaData().getColumnName(i).compareTo("ADISECT") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
 				}
 				data.add(filter);
 			}
@@ -360,7 +372,7 @@ public class SpController {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -400,8 +412,18 @@ public class SpController {
 			while (rs.next()) {// 1~60
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i),rs.getString(i));
+					if(rs.getMetaData().getColumnName(i).compareTo("DTPDATE") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if(rs.getMetaData().getColumnName(i).compareTo("DTPTIME") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if(rs.getMetaData().getColumnName(i).compareTo("DTPDOCNM") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if(rs.getMetaData().getColumnName(i).compareTo("DTPDEPT") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
 				}
 				data.add(filter);
 			}
@@ -444,7 +466,7 @@ public class SpController {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -489,8 +511,9 @@ public class SpController {
 			while (rs.next()) {// 1~60
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -531,8 +554,9 @@ public class SpController {
 			while (rs.next()) {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -573,8 +597,9 @@ public class SpController {
 			while (rs.next()) {
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -615,8 +640,9 @@ public class SpController {
 			while (rs.next()) {// 1~60
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -657,8 +683,9 @@ public class SpController {
 			while (rs.next()) {// 1~60
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -699,8 +726,9 @@ public class SpController {
 			while (rs.next()) {// 1~60
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -741,8 +769,9 @@ public class SpController {
 			while (rs.next()) {// 1~60
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -756,6 +785,8 @@ public class SpController {
 		}
 		return data;
 	}
+
+
 
 	@GetMapping("/UDORDER0/{hisid}/{caseno}/{seq}")
 	public List<Object> UDORDER0(@PathVariable String hisid, @PathVariable String caseno, @PathVariable String seq) {
@@ -778,15 +809,17 @@ public class SpController {
 			cs.registerOutParameter(4, Types.INTEGER);
 			cs.registerOutParameter(5, Types.VARCHAR);
 			cs.execute();
-			//System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" + cs.getString(5));
+			// System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" +
+			// cs.getString(5));
 
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -820,15 +853,16 @@ public class SpController {
 			cs.setString(2, seq);
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.execute();
-			//System.out.println("Logger_info_1-->" + cs.getInt(3));
+			// System.out.println("Logger_info_1-->" + cs.getInt(3));
 
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -863,15 +897,17 @@ public class SpController {
 			cs.registerOutParameter(3, Types.INTEGER);
 			cs.registerOutParameter(4, Types.VARCHAR);
 			cs.execute();
-			//System.out.println("Logger_info_1-->" + cs.getInt(3) + "_" + cs.getString(4));
+			// System.out.println("Logger_info_1-->" + cs.getInt(3) + "_" +
+			// cs.getString(4));
 
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) ,rs.getString(i));
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -907,15 +943,17 @@ public class SpController {
 			cs.registerOutParameter(4, Types.INTEGER);
 			cs.registerOutParameter(5, Types.VARCHAR);
 			cs.execute();
-			//System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" + cs.getString(5));
+			// System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" +
+			// cs.getString(5));
 
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -929,7 +967,7 @@ public class SpController {
 		}
 		return data;
 	}
-	
+
 	@GetMapping("/PCASELIST/{hisid}/{docid}/{ttype}")
 	public List<Object> PCASELIST(@PathVariable String hisid, @PathVariable String docid, @PathVariable String ttype) {
 
@@ -951,15 +989,17 @@ public class SpController {
 			cs.registerOutParameter(4, Types.INTEGER);
 			cs.registerOutParameter(5, Types.VARCHAR);
 			cs.execute();
-			//System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" + cs.getString(5));
+			// System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" +
+			// cs.getString(5));
 
 			rs = (ResultSet) cs.executeQuery();
 
 			while (rs.next()) {// 1~60
 				Map<Object, Object> filter = new HashMap<>();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					//System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " + rs.getString(i));
-					filter.put(rs.getMetaData().getColumnName(i) , rs.getString(i));
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				data.add(filter);
 			}
@@ -973,5 +1013,116 @@ public class SpController {
 		}
 		return data;
 	}
+	
+	
+	
+	@GetMapping("/UDORDER0/{hisid}/{caseno}/{seq}")
+	public Map<Object, Object> WARDFLAGDATALIST(@PathVariable String hisid, @PathVariable String caseno,
+			@PathVariable String seq) {
 
+		Connection conn = null;
+		ResultSet rs = null;
+		CallableStatement cs;
+		List<Object> data = new ArrayList<Object>();
+		Map<Object, Object> datalist = new HashMap<>();
+		try {
+			Class.forName(driver).newInstance();
+
+			conn = (Connection) DriverManager.getConnection(url, userName, passWord);
+
+			cs = (CallableStatement) conn.prepareCall("CALL VGHTPEVG.UDORDER0(?,?,?,?,?)");
+
+			cs.setString(1, hisid);
+			cs.setString(2, caseno);
+			cs.setString(3, seq);
+			cs.registerOutParameter(4, Types.INTEGER);
+			cs.registerOutParameter(5, Types.VARCHAR);
+			cs.execute();
+			// System.out.println("Logger_info_1-->" + cs.getInt(4) + "_" +
+			// cs.getString(5));
+
+			rs = (ResultSet) cs.executeQuery();
+
+			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					if (rs.getMetaData().getColumnName(i).compareTo("UDDRGNAM") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if (rs.getMetaData().getColumnName(i).compareTo("UDGNAME") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if (rs.getMetaData().getColumnName(i).compareTo("UTSTATUS") == 0) {
+						if (rs.getString(i).compareTo("80") == 0) {
+							filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+						}
+					}
+				}
+				data.add(filter);
+			}
+
+			List<Object> TRTMNQLIST = WARDFLAGFORTRTMNTQ1(hisid,caseno);
+			datalist.put("UDORDER",data);
+			datalist.put("TRTMNQLIST",TRTMNQLIST);
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("error:" + e.getMessage());
+			System.out.println(e.toString());
+		}
+		return datalist;
+	}
+
+	private List<Object> WARDFLAGFORTRTMNTQ1(String hisid, String caseno) {
+
+		Connection conn = null;
+		ResultSet rs = null;
+		CallableStatement cs;
+		List<Object> data = new ArrayList<Object>();
+
+		try {
+			Class.forName(driver).newInstance();
+
+			conn = (Connection) DriverManager.getConnection(url, userName, passWord);
+
+			cs = (CallableStatement) conn.prepareCall("CALL VGHTPEVG.TRTMNTQ1(?,?,?)");
+
+			cs.setString(1, hisid);
+			cs.setString(2, caseno);
+			cs.registerOutParameter(3, Types.INTEGER);
+			cs.execute();
+			System.out.println("Logger_info_1-->" + cs.getInt(3));
+
+			rs = (ResultSet) cs.executeQuery();
+
+			while (rs.next()) {// 1~60
+				Map<Object, Object> filter = new HashMap<>();
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					// System.out.println("Col --> " + rs.getMetaData().getColumnName(i) + " : " +
+					// rs.getString(i));
+					if (rs.getMetaData().getColumnName(i).compareTo("ORPROCED") == 0) {
+						filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					}
+					if (rs.getMetaData().getColumnName(i).compareTo("ORSTATUS") == 0) {
+						if (rs.getString(i).compareTo("80") == 0) {
+							filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+						}
+					}
+				}
+				data.add(filter);
+			}
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("error:" + e.getMessage());
+			System.out.println(e.toString());
+		}
+		return data;
+	}
+	
 }

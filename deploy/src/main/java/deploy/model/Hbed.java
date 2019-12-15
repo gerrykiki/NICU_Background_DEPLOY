@@ -13,8 +13,8 @@ public class Hbed {
 	
 	@PrimaryKey
 	private String caseid;
-	private String  hisid;
-	private String  pnamec;	
+	private String hisid;
+	private String pnamec;	
 	private String psex;
 	private String transintime;
 	private String transinid;
