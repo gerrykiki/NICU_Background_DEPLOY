@@ -33,10 +33,10 @@ public class AnnouncementController {
 	@Autowired
     AnnouncementRepository announcementRepository;
 	
-	// private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("cassandra").withPort(9042)
-	// 		.build();
-	private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
+	private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("cassandra").withPort(9042)
 			.build();
+	// private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
+	// 		.build();
 	private Session session = cluster.connect("nicu");
     
 	@ApiOperation("建立公告資訊")

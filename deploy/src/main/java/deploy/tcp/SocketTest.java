@@ -2,6 +2,7 @@ package deploy.tcp;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -19,9 +20,14 @@ import com.datastax.driver.core.Session;
 
 import ca.uhn.hl7v2.util.Hl7InputStreamMessageIterator;
 import ca.uhn.hl7v2.DefaultHapiContext;
+import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.HapiContext;
+import ca.uhn.hl7v2.app.Connection;
+import ca.uhn.hl7v2.app.HL7Service;
+import ca.uhn.hl7v2.app.Initiator;
 import ca.uhn.hl7v2.model.Message;
 import ca.uhn.hl7v2.model.v23.group.*;
+import ca.uhn.hl7v2.model.v23.message.ADT_A01;
 import ca.uhn.hl7v2.model.v23.message.ORU_R01;
 import ca.uhn.hl7v2.model.v23.segment.MSH;
 import ca.uhn.hl7v2.model.v23.segment.OBR;
@@ -30,11 +36,10 @@ import ca.uhn.hl7v2.model.v23.segment.PID;
 import ca.uhn.hl7v2.model.v23.segment.PV1;
 import ca.uhn.hl7v2.parser.Parser;
 
-
 public class SocketTest extends Thread {
 
 	private static HapiContext context = new DefaultHapiContext();
-	int SOCKET_PORT = 9000;
+	private static final int PORT_NUMBER = 9000;
 	String SERVER = "10.100.83.150";
 	String FILE = "CenterM3150.txt";
 
@@ -48,7 +53,7 @@ public class SocketTest extends Thread {
 
 	public SocketTest() {
 		try {
-			client = new Socket(SERVER, SOCKET_PORT);
+			client = new Socket(SERVER, PORT_NUMBER);
 			// server = new ServerSocket(5556);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -63,13 +68,36 @@ public class SocketTest extends Thread {
 		BufferedOutputStream ToFrontend;
 
 		System.out.println("TCP已連線 !");
+		// byte[] mybytearray = new byte[10240];
+		String FILE = "CenterM3150.txt";
 
+		// try {
 
+		// ADT_A01 adtMessage = (ADT_A01) AdtMessageFactory.createMessage("A01");
 
+		// // create a new MLLP client over the specified port
+		// Connection connection = context.newClient(SERVER, PORT_NUMBER, false);
+
+		// // The initiator which will be used to transmit our message
+		// Initiator initiator = connection.getInitiator();
+
+		// // send the previously created HL7 message over the connection established
+		// Parser parser = context.getPipeParser();
+		// System.out.println("Sending message:" + "\n" + parser.encode(adtMessage));
+
+		// Message response = initiator.sendAndReceive(adtMessage);
+
+		// // display the message response received from the remote party
+		// String responseString = parser.encode(response);
+		// System.out.println("Received response:\n" + responseString);
+
+		// } catch (Exception e) {
+
+		// e.printStackTrace();
+		// }
 		try {
 			// socket = server.accept();
 			// logger.info("取得Frontend連線 ： " + socket);
-
 			FileOutputStream file = new FileOutputStream(FILE);
 			ToMe = new BufferedOutputStream(file);
 
@@ -77,29 +105,45 @@ public class SocketTest extends Thread {
 
 			in = new BufferedInputStream(client.getInputStream());
 			int numByte = in.available();
-			byte[] mybytearray = new byte[10240];
-			
+
 			int len = 0;
-			String data = "";
+			byte[] mybytearray = new byte[10240];
+
+			// parser(new String(mybytearray));
 			while ((len = in.read(mybytearray, 0, mybytearray.length)) > 0) {
-				data = new String(mybytearray);
-//				Parser parser = context.getPipeParser();
-//				string responseString = parser.encode(data);
-//				data = data.replaceAll("\+", "\\");
-//				String newdata = data.replace("", "\\");
+				ToMe = new BufferedOutputStream(file);
+				ToMe.write(mybytearray, 0, len);
+				ToMe.flush();
+				FileReader fr = new FileReader("CenterM3150.txt");
+				BufferedReader br = new BufferedReader(fr);
+
+				while (br.ready()) {
+					System.out.println(br.readLine());
+					parser(br.readLine());
+				}
+				// byte[] mybytearray2 = new byte[10240];
+				// in.read(mybytearray2);
+				// System.out.println("Message received from Server: " + new
+				// String(mybytearray));
+				// String data = new String(mybytearray2,1,len);
+				// System.out.println("我取得的值:\n" + data);
+				// Parser parser = context.getPipeParser();
+				// string responseString = parser.encode(data);
+				// data = data.replaceAll("\+", "\\");
+				// String newdata = data.replace("", "\\");
 
 				// ToFrontend.write(mybytearray, 0, len);
 				// ToFrontend.flush();
-				try {
-					parser(data);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				// try {
+				// parser(data);
+				// // parser(new String(mybytearray));
+				// } catch (Exception e) {
+				// e.printStackTrace();
+				// }
 
 				// ToMe.write(mybytearray, 0, len);
 				// ToMe.flush();
 
-				System.out.println("我取得的值:\n" + data);
 			}
 
 		} catch (IOException e) {
@@ -108,17 +152,16 @@ public class SocketTest extends Thread {
 
 	}
 
-	
-	
-	public void parser(String msg) throws Exception {
+	public void parser(String msg) {
 		HapiContext context = new DefaultHapiContext();
 
-		Parser p = context.getPipeParser();
+		Parser p = context.getGenericParser();
 
 		Message hapiMsg;
 		try {
 			hapiMsg = p.parse(msg);
 			try {
+				System.out.println(hapiMsg);
 				ORU_R01 oruMsg = (ORU_R01) hapiMsg;
 
 				ORU_R01_RESPONSE oruResp = oruMsg.getRESPONSE();
@@ -165,6 +208,7 @@ public class SocketTest extends Thread {
 				OBR obr0 = oruOrd.getOBR();
 
 				String pn = pid.getPatientName(0).encode();// PatientName
+				System.out.println(pn);
 				String HISID = "";
 				int j = pn.indexOf("^");
 				HISID = pn.substring(0, j);
@@ -243,8 +287,8 @@ public class SocketTest extends Thread {
 
 				DateTimeFormatter originalFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 				LocalDateTime ldt = LocalDateTime.parse(date, originalFormat);
-                System.out.println(ldt);
-                System.out.println(HISID);
+				System.out.println(ldt);
+				System.out.println(HISID);
 				StringBuilder sb = new StringBuilder("INSERT INTO ").append("centermonitor")
 						.append("(time,phistnum,hr,sp,rr,bt,abp_s,abp_d,abp_m,nbp_s,nbp_d,nbp_m) ").append("VALUES('")
 						.append(ldt).append("', '").append(HISID).append("',").append(HR).append(", ").append(SpO2)

@@ -16,6 +16,7 @@ public class Patient {
 	private String hisid;
 	private String pnamec;	
 	private String psex;
+	private String transindays;
 	private String transintime;
 	private String transinid;
 }
