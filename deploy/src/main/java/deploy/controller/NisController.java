@@ -97,7 +97,7 @@ public class NisController {
 				"http://10.97.235.18:9080/NPIWS/service/Nnis/QSPE/NIMA/" + caseno + "/" + st + "/" + et, HttpMethod.GET,
 				entityNNIS, String.class);
 		String nnis = resp.getBody();
-		
+
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		InputSource is;
@@ -113,12 +113,14 @@ public class NisController {
 				System.out.println("\nCurrent Element :" + nNode.getNodeName());
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
-					//if (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW") == 0) {
-						Map<Object, Object> filter = new HashMap<>();
-						filter.put("Special", eElement.getElementsByTagName("special").item(0).getTextContent());
-						filter.put("Date", eElement.getElementsByTagName("rec_dat").item(0).getTextContent());
-						data.add(filter);
-					//}
+					// if
+					// (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW")
+					// == 0) {
+					Map<Object, Object> filter = new HashMap<>();
+					filter.put("Special", eElement.getElementsByTagName("special").item(0).getTextContent());
+					filter.put("Date", eElement.getElementsByTagName("rec_dat").item(0).getTextContent());
+					data.add(filter);
+					// }
 				}
 			}
 
@@ -126,10 +128,9 @@ public class NisController {
 		} catch (SAXException e) {
 		} catch (IOException e) {
 		}
-		
+
 		return data;
 	}
-
 
 	@GetMapping("/TEST") // 查詢特定時間身高體重/體圍測量資訊
 	public List<Map<Object, Object>> NISTEST() throws Exception {
@@ -140,7 +141,7 @@ public class NisController {
 		data.add(filter);
 		return data;
 	}
-	
+
 	@GetMapping("/QTWPER/{caseno}/{st}/{et}") // 查詢特定時間身高體重/體圍測量資訊
 	public List<Map<Object, Object>> QTWPER(@PathVariable String caseno, @PathVariable String st,
 			@PathVariable String et) throws Exception {
@@ -187,10 +188,9 @@ public class NisController {
 		return data;
 	}
 
-		
 	@GetMapping("/QPNOT/{caseno}/{st}/{et}") // 查詢特定時間護理紀錄資訊
-	public List<Map<Object, Object>> QPNOT(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
-			throws Exception {
+	public List<Map<Object, Object>> QPNOT(@PathVariable String caseno, @PathVariable String st,
+			@PathVariable String et) throws Exception {
 		trustAllHttpsCertificates();
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
 		HttpHeaders headers = new HttpHeaders();
@@ -200,7 +200,7 @@ public class NisController {
 				"http://10.97.235.18:9080/NPIWS/service/Nnis/QPNOT/NIMA/" + caseno + "/" + st + "/" + et,
 				HttpMethod.GET, entityNNIS, String.class);
 		String nnis = resp.getBody();
-		
+
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		InputSource is;
@@ -216,13 +216,15 @@ public class NisController {
 				System.out.println("\nCurrent Element :" + nNode.getNodeName());
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
-					//if (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW") == 0) {
-						Map<Object, Object> filter = new HashMap<>();
-						filter.put("Cre_Nam", eElement.getElementsByTagName("cre_nam").item(0).getTextContent());
-						filter.put("Pro_Not", eElement.getElementsByTagName("pro_not").item(0).getTextContent());
-						filter.put("Date", eElement.getElementsByTagName("rec_dat").item(0).getTextContent());
-						data.add(filter);
-					//}
+					// if
+					// (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW")
+					// == 0) {
+					Map<Object, Object> filter = new HashMap<>();
+					filter.put("Cre_Nam", eElement.getElementsByTagName("cre_nam").item(0).getTextContent());
+					filter.put("Pro_Not", eElement.getElementsByTagName("pro_not").item(0).getTextContent());
+					filter.put("Date", eElement.getElementsByTagName("rec_dat").item(0).getTextContent());
+					data.add(filter);
+					// }
 				}
 			}
 
@@ -230,7 +232,7 @@ public class NisController {
 		} catch (SAXException e) {
 		} catch (IOException e) {
 		}
-		
+
 		return data;
 	}
 
@@ -246,7 +248,7 @@ public class NisController {
 				"http://10.97.235.18:9080/NPIWS/service/Nnis/QDVS/NIMA/" + caseno + "/" + st + "/" + et, HttpMethod.GET,
 				entityNNIS, String.class);
 		String nnis = resp.getBody();
-		
+
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		InputSource is;
@@ -262,16 +264,18 @@ public class NisController {
 				System.out.println("\nCurrent Element :" + nNode.getNodeName());
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
-					//if (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW") == 0) {
-						Map<Object, Object> filter = new HashMap<>();
-						filter.put("Breath", eElement.getElementsByTagName("breath").item(0).getTextContent());
-						filter.put("Diastolic", eElement.getElementsByTagName("diastolic").item(0).getTextContent());
-						filter.put("Pluse", eElement.getElementsByTagName("pluse").item(0).getTextContent());
-						filter.put("Systolic", eElement.getElementsByTagName("systolic").item(0).getTextContent());
-						filter.put("Temperature", eElement.getElementsByTagName("temperature").item(0).getTextContent());
-						filter.put("Date", eElement.getElementsByTagName("rec_dat").item(0).getTextContent());
-						data.add(filter);
-					//}
+					// if
+					// (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW")
+					// == 0) {
+					Map<Object, Object> filter = new HashMap<>();
+					filter.put("Breath", eElement.getElementsByTagName("breath").item(0).getTextContent());
+					filter.put("Diastolic", eElement.getElementsByTagName("diastolic").item(0).getTextContent());
+					filter.put("Pluse", eElement.getElementsByTagName("pluse").item(0).getTextContent());
+					filter.put("Systolic", eElement.getElementsByTagName("systolic").item(0).getTextContent());
+					filter.put("Temperature", eElement.getElementsByTagName("temperature").item(0).getTextContent());
+					filter.put("Date", eElement.getElementsByTagName("rec_dat").item(0).getTextContent());
+					data.add(filter);
+					// }
 				}
 			}
 
@@ -295,7 +299,7 @@ public class NisController {
 				"http://10.97.235.18:9080/NPIWS/service/Nnis/QOXY/NIMA/" + caseno + "/" + st + "/" + et, HttpMethod.GET,
 				entityNNIS, String.class);
 		String nnis = resp.getBody();
-		
+
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		InputSource is;
@@ -311,12 +315,14 @@ public class NisController {
 				System.out.println("\nCurrent Element :" + nNode.getNodeName());
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
-					//if (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW") == 0) {
-						Map<Object, Object> filter = new HashMap<>();
-						filter.put("SpO2", eElement.getElementsByTagName("concen").item(0).getTextContent());
-						filter.put("Date", eElement.getElementsByTagName("rec_dat").item(0).getTextContent());
-						data.add(filter);
-					//}
+					// if
+					// (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW")
+					// == 0) {
+					Map<Object, Object> filter = new HashMap<>();
+					filter.put("SpO2", eElement.getElementsByTagName("concen").item(0).getTextContent());
+					filter.put("Date", eElement.getElementsByTagName("rec_dat").item(0).getTextContent());
+					data.add(filter);
+					// }
 				}
 			}
 
@@ -329,8 +335,7 @@ public class NisController {
 	}
 
 	@GetMapping("/QDC/{caseno}/{st}/{et}") // 輸出入量(兒)
-	public Object QDC(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
-			throws Exception {
+	public Object QDC(@PathVariable String caseno, @PathVariable String st, @PathVariable String et) throws Exception {
 		trustAllHttpsCertificates();
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
 		HttpHeaders headers = new HttpHeaders();
@@ -340,7 +345,7 @@ public class NisController {
 				"http://10.97.235.18:9080/NPIWS/service/Nnis/QDC/NIMA/" + caseno + "/" + st + "/" + et, HttpMethod.GET,
 				entityNNIS, String.class);
 		String nnis = resp.getBody();
-		
+
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		InputSource is;
@@ -356,19 +361,39 @@ public class NisController {
 				System.out.println("\nCurrent Element :" + nNode.getNodeName());
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
-					//if (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW") == 0) {
-						Map<Object, Object> filter = new HashMap<>();
+					// if
+					// (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW")
+					// == 0) {
+					Map<Object, Object> filter = new HashMap<>();
+					if (eElement.getElementsByTagName("inp_val1") != null) {
 						filter.put("inp_val1", eElement.getElementsByTagName("inp_val1").item(0).getTextContent());
+					}
+					if (eElement.getElementsByTagName("inp_val2") != null) {
 						filter.put("inp_val2", eElement.getElementsByTagName("inp_val2").item(0).getTextContent());
+					}
+					if (eElement.getElementsByTagName("color") != null) {
 						filter.put("color", eElement.getElementsByTagName("color").item(0).getTextContent());
+					}
+					if (eElement.getElementsByTagName("item") != null) {
 						filter.put("item", eElement.getElementsByTagName("item").item(0).getTextContent());
+					}
+					if (eElement.getElementsByTagName("line") != null) {
 						filter.put("line", eElement.getElementsByTagName("line").item(0).getTextContent());
+					}
+					if (eElement.getElementsByTagName("nam") != null) {
 						filter.put("nam", eElement.getElementsByTagName("nam").item(0).getTextContent());
+					}
+					if (eElement.getElementsByTagName("out_val1") != null) {
 						filter.put("out_val1", eElement.getElementsByTagName("out_val1").item(0).getTextContent());
+					}
+					if (eElement.getElementsByTagName("out_val2") != null) {
 						filter.put("out_val2", eElement.getElementsByTagName("out_val2").item(0).getTextContent());
-						filter.put("Date", eElement.getElementsByTagName("rec_dat").item(0).getTextContent());
-						data.add(filter);
-					//}
+					}
+					if (eElement.getElementsByTagName("Date") != null) {
+						filter.put("Date", eElement.getElementsByTagName("Date").item(0).getTextContent());
+					}
+					data.add(filter);
+					// }
 				}
 			}
 
@@ -376,7 +401,7 @@ public class NisController {
 		} catch (SAXException e) {
 		} catch (IOException e) {
 		}
-		
+
 		return nnis;
 	}
 
@@ -391,7 +416,7 @@ public class NisController {
 				"http://10.97.235.18:9080/NPIWS/service/Nnis/QMNC/NIMA/" + caseno, HttpMethod.GET, entityNNIS,
 				String.class);
 		String nnis = resp.getBody();
-		
+
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		InputSource is;
@@ -407,12 +432,14 @@ public class NisController {
 				System.out.println("\nCurrent Element :" + nNode.getNodeName());
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
-					//if (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW") == 0) {
-						Map<Object, Object> filter = new HashMap<>();
-						filter.put("days", eElement.getElementsByTagName("days").item(0).getTextContent());
-						filter.put("weeks", eElement.getElementsByTagName("weeks").item(0).getTextContent());
-						data.add(filter);
-					//}
+					// if
+					// (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW")
+					// == 0) {
+					Map<Object, Object> filter = new HashMap<>();
+					filter.put("days", eElement.getElementsByTagName("days").item(0).getTextContent());
+					filter.put("weeks", eElement.getElementsByTagName("weeks").item(0).getTextContent());
+					data.add(filter);
+					// }
 				}
 			}
 
@@ -420,7 +447,7 @@ public class NisController {
 		} catch (SAXException e) {
 		} catch (IOException e) {
 		}
-		
+
 		return data;
 	}
 
