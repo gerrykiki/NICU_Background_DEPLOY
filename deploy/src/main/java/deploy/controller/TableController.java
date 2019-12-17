@@ -217,13 +217,13 @@ public class TableController {
 				String weeks_days_birth = "[" + weeks_birth + "+" + days_birth + "]";
 				filter.put("weeks_days_birth", weeks_days_birth);
 
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-				Date date = sdf.parse(birthday);
-				int timediff = (int) ((new Date().getTime() - date.getTime()) / (24 * 60 * 60 * 1000)) + parseInt(days_birth);
-				int w = (timediff / 7) + parseInt(weeks_birth);
-				int d = timediff % 7;
-				String weeks_local_birth = "[" + w + "+" + d + "]";
-				filter.put("weeks_local_birth", weeks_local_birth);
+				// SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+				// Date date = sdf.parse(birthday);
+				// int timediff = (int) ((new Date().getTime() - date.getTime()) / (24 * 60 * 60 * 1000)) + parseInt(days_birth);
+				// int w = (timediff / 7) + parseInt(weeks_birth);
+				// int d = timediff % 7;
+				// String weeks_local_birth = "[" + w + "+" + d + "]";
+				// filter.put("weeks_local_birth", weeks_local_birth);
 
 
 
@@ -251,9 +251,6 @@ public class TableController {
 		return data;
 	}
 
-	private int parseInt(String days_birth) {
-		return 0;
-	}
 
 	@GetMapping("/PLOC/{PCASENO}")
 	public List<Map<Object, Object>> PLOC(@PathVariable Object PCASENO) {

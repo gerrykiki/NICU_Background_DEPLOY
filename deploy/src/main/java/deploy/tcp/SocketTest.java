@@ -3,6 +3,7 @@ package deploy.tcp;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
+import com.ibm.db2.jcc.am.le;
 
 import ca.uhn.hl7v2.util.Hl7InputStreamMessageIterator;
 import ca.uhn.hl7v2.DefaultHapiContext;
@@ -64,12 +66,10 @@ public class SocketTest extends Thread {
 
 	public void run() {
 		BufferedInputStream in;
-		BufferedOutputStream ToMe;
 		BufferedOutputStream ToFrontend;
 
 		System.out.println("TCP已連線 !");
 		// byte[] mybytearray = new byte[10240];
-		String FILE = "CenterM3150.txt";
 
 		// try {
 
@@ -98,53 +98,21 @@ public class SocketTest extends Thread {
 		try {
 			// socket = server.accept();
 			// logger.info("取得Frontend連線 ： " + socket);
-			FileOutputStream file = new FileOutputStream(FILE);
-			ToMe = new BufferedOutputStream(file);
-
-			// ToFrontend = new BufferedOutputStream(socket.getOutputStream());
-
-			in = new BufferedInputStream(client.getInputStream());
-			int numByte = in.available();
-
-			int len = 0;
 			byte[] mybytearray = new byte[10240];
-
-			// parser(new String(mybytearray));
-			while ((len = in.read(mybytearray, 0, mybytearray.length)) > 0) {
-				ToMe = new BufferedOutputStream(file);
-				ToMe.write(mybytearray, 0, len);
-				ToMe.flush();
-				FileReader fr = new FileReader("CenterM3150.txt");
-				BufferedReader br = new BufferedReader(fr);
-
-				while (br.ready()) {
-					System.out.println(br.readLine());
-					parser(br.readLine());
-				}
-				// byte[] mybytearray2 = new byte[10240];
-				// in.read(mybytearray2);
-				// System.out.println("Message received from Server: " + new
-				// String(mybytearray));
-				// String data = new String(mybytearray2,1,len);
-				// System.out.println("我取得的值:\n" + data);
-				// Parser parser = context.getPipeParser();
-				// string responseString = parser.encode(data);
-				// data = data.replaceAll("\+", "\\");
-				// String newdata = data.replace("", "\\");
-
-				// ToFrontend.write(mybytearray, 0, len);
-				// ToFrontend.flush();
-				// try {
-				// parser(data);
-				// // parser(new String(mybytearray));
-				// } catch (Exception e) {
-				// e.printStackTrace();
-				// }
-
-				// ToMe.write(mybytearray, 0, len);
-				// ToMe.flush();
-
-			}
+			int len = 0;
+			String FILE = "CenterM3150.txt";
+			// BufferedOutputStream ToMe;
+			// FileOutputStream file = new FileOutputStream(FILE);
+			// ToMe = new BufferedOutputStream(file);
+			// ToMe.write(mybytearray, 0, len);
+			// ToMe.flush();
+			// ToMe.close();
+			// ToFrontend = new BufferedOutputStream(socket.getOutputStream());
+			in = new BufferedInputStream(client.getInputStream());
+			FileWriter fw = new FileWriter(FILE);
+			fw.write(in.read(mybytearray,0,len));
+			fw.close();
+			parser();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -152,26 +120,20 @@ public class SocketTest extends Thread {
 
 	}
 
-	public void parser(String msg) {
-		HapiContext context = new DefaultHapiContext();
+	public void parser() throws FileNotFoundException {
+		FileReader reader = new FileReader("Center.txt");
+		Hl7InputStreamMessageIterator messageIterator = new Hl7InputStreamMessageIterator(reader);
 
-		Parser p = context.getGenericParser();
-
-		Message hapiMsg;
-		try {
-			hapiMsg = p.parse(msg);
+		while (messageIterator.hasNext()) {
 			try {
-				System.out.println(hapiMsg);
-				ORU_R01 oruMsg = (ORU_R01) hapiMsg;
-
+				Message nextMessage = messageIterator.next();
+				ORU_R01 oruMsg = (ORU_R01) nextMessage;
 				ORU_R01_RESPONSE oruResp = oruMsg.getRESPONSE();
 				ORU_R01_PATIENT oruPat = oruResp.getPATIENT();
 				ORU_R01_VISIT oruVis = oruPat.getVISIT();
-
 				MSH msh = oruMsg.getMSH();
 				PID pid = oruPat.getPID();
 				PV1 pv1 = oruVis.getPV1();
-
 				ORU_R01_ORDER_OBSERVATION oruOrd = oruResp.getORDER_OBSERVATION();
 				ORU_R01_OBSERVATION oruObs0 = oruOrd.getOBSERVATION(0);
 				ORU_R01_OBSERVATION oruObs1 = oruOrd.getOBSERVATION(1);
@@ -188,7 +150,6 @@ public class SocketTest extends Thread {
 				ORU_R01_OBSERVATION oruObs12 = oruOrd.getOBSERVATION(12);
 				ORU_R01_OBSERVATION oruObs13 = oruOrd.getOBSERVATION(13);
 				ORU_R01_OBSERVATION oruObs14 = oruOrd.getOBSERVATION(14);
-
 				OBX obx0 = oruObs0.getOBX();
 				OBX obx1 = oruObs1.getOBX();
 				OBX obx2 = oruObs2.getOBX();
@@ -204,61 +165,41 @@ public class SocketTest extends Thread {
 				OBX obx12 = oruObs12.getOBX();
 				OBX obx13 = oruObs13.getOBX();
 				OBX obx14 = oruObs14.getOBX();
-
 				OBR obr0 = oruOrd.getOBR();
-
 				String pn = pid.getPatientName(0).encode();// PatientName
-				System.out.println(pn);
 				String HISID = "";
 				int j = pn.indexOf("^");
 				HISID = pn.substring(0, j);
-
 				String date = obr0.getObservationDateTime().encode();// date
-
 				String obsId_col1 = obx1.getObservationIdentifier().getComponent(1).encode();
 				String obx1_value = obx1.getObservationValue(0).encode();
-
 				String obsId_col2 = obx2.getObservationIdentifier().getComponent(1).encode();
 				String obx2_value = obx2.getObservationValue(0).encode();
-
 				String obsId_col3 = obx3.getObservationIdentifier().getComponent(1).encode();
 				String obx3_value = obx3.getObservationValue(0).encode();
-
 				String obsId_col4 = obx4.getObservationIdentifier().getComponent(1).encode();
 				String obx4_value = obx4.getObservationValue(0).encode();
-
 				String obsId_col5 = obx5.getObservationIdentifier().getComponent(1).encode();
 				String obx5_value = obx5.getObservationValue(0).encode();
-
 				String obsId_col6 = obx6.getObservationIdentifier().getComponent(1).encode();
 				String obx6_value = obx6.getObservationValue(0).encode();
-
 				String obsId_col7 = obx7.getObservationIdentifier().getComponent(1).encode();
 				String obx7_value = obx7.getObservationValue(0).encode();
-
 				String obsId_col8 = obx8.getObservationIdentifier().getComponent(1).encode();
 				String obx8_value = obx8.getObservationValue(0).encode();
-
 				String obsId_col9 = obx9.getObservationIdentifier().getComponent(1).encode();
 				String obx9_value = obx9.getObservationValue(0).encode();
-
 				String obsId_col10 = obx10.getObservationIdentifier().getComponent(1).encode();
 				String obx10_value = obx10.getObservationValue(0).encode();
-
 				String obsId_col11 = obx11.getObservationIdentifier().getComponent(1).encode();
 				String obx11_value = obx11.getObservationValue(0).encode();
-
 				String obsId_col12 = obx12.getObservationIdentifier().getComponent(1).encode();
 				String obx12_value = obx12.getObservationValue(0).encode();
-
 				String obsId_col13 = obx13.getObservationIdentifier().getComponent(1).encode();
 				String obx13_value = obx13.getObservationValue(0).encode();
-
 				String obsId_col14 = obx14.getObservationIdentifier().getComponent(1).encode();
 				String obx14_value = obx14.getObservationValue(0).encode();
-
 				HashMap<String, String> m3150 = new HashMap<String, String>();
-
 				m3150.put(obsId_col1, obx1_value);
 				m3150.put(obsId_col2, obx2_value);
 				m3150.put(obsId_col3, obx3_value);
@@ -273,7 +214,6 @@ public class SocketTest extends Thread {
 				m3150.put(obsId_col12, obx12_value);
 				m3150.put(obsId_col13, obx13_value);
 				m3150.put(obsId_col14, obx14_value);
-
 				Integer HR = (m3150.get("HR") != null ? Integer.parseInt(m3150.get("HR")) : 0);
 				Integer SpO2 = (m3150.get("SpO2") != null ? Integer.parseInt(m3150.get("SpO2")) : 0);
 				Integer RR = (m3150.get("RR") != null ? Integer.parseInt(m3150.get("RR")) : 0);
@@ -284,27 +224,21 @@ public class SocketTest extends Thread {
 				Integer NBPd = (m3150.get("NBPd") != null ? Integer.parseInt(m3150.get("NBPd")) : 0);
 				Integer NBPs = (m3150.get("NBPs") != null ? Integer.parseInt(m3150.get("NBPs")) : 0);
 				Integer NBPm = (m3150.get("NBPm") != null ? Integer.parseInt(m3150.get("NBPm")) : 0);
-
 				DateTimeFormatter originalFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 				LocalDateTime ldt = LocalDateTime.parse(date, originalFormat);
-				System.out.println(ldt);
-				System.out.println(HISID);
 				StringBuilder sb = new StringBuilder("INSERT INTO ").append("centermonitor")
-						.append("(time,phistnum,hr,sp,rr,bt,abp_s,abp_d,abp_m,nbp_s,nbp_d,nbp_m) ").append("VALUES('")
-						.append(ldt).append("', '").append(HISID).append("',").append(HR).append(", ").append(SpO2)
-						.append(", ").append(RR).append(", ").append(BT).append(", ").append(ABPs).append(", ")
-						.append(ABPd).append(", ").append(ABPm).append(",").append(NBPs).append(", ").append(NBPd)
-						.append(",").append(NBPm).append(");");
-
+						.append("(time , phistnum , abp_d ,abp_m , abp_s ,bt ,hr ,nbp_d ,nbp_m ,nbp_s ,rr ,sp )")
+						.append("VALUES('").append(ldt).append("', '").append(HISID).append("',").append(ABPd)
+						.append(",").append(ABPs).append(", ").append(ABPm).append(", ").append(BT).append(",")
+						.append(HR).append(", ").append(NBPd).append(", ").append(NBPs).append(",").append(NBPm)
+						.append(",").append(RR).append(",").append(SpO2).append(");");
 				String query = sb.toString();
 				session.execute(query);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+
 	}
 
 }
