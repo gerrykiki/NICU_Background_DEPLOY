@@ -48,13 +48,12 @@ public class UserService implements UserDetailsService {
 			list.add(new User(r.getString("username"), r.getString("password"), r.getInt("role"), r.getString("name")));
 		});
 
-		if (list == null) {
-			throw new UsernameNotFoundException("User not found with username: " + username);
-		}
-
 		String usr = "";
 		String pwd = "";
 		for (User user : list) {
+			if(!user.getUsername().equals(username)) {
+				throw new UsernameNotFoundException("User not found with username: " + username);
+			}
 			usr = user.getUsername();
 			pwd = user.getPassword();
 		}
