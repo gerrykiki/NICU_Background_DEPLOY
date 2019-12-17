@@ -1,0 +1,110 @@
+package deploy.controller;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.validation.Valid;
+
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
+
+import deploy.model.BodyUser;
+import deploy.model.UserDTO;
+import deploy.service.UserService;
+import io.swagger.annotations.ApiOperation;
+
+@RestController
+public class LoginController {
+
+	private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("cassandra").withPort(9042)
+			.build();
+	 //private Cluster cluster =
+	 //Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
+	 //.build();
+	private Session session = cluster.connect("nicuspace");
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	@Autowired
+	private UserService userDetailsService;
+
+	@ApiOperation("登入")
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody BodyUser authenticationRequest) throws Exception {
+
+		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+
+		return ResponseEntity.ok(userDetails.getUsername());
+	}
+
+	@ApiOperation("新增/更新帳號")
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
+		return ResponseEntity.ok(userDetailsService.save(user));
+	}
+
+	@ApiOperation("刪除帳號")
+	@RequestMapping(value = "/delUser/{name}/{role}/{username}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> delUser(@Valid @PathVariable String name, @Valid @PathVariable int role,
+			@Valid @PathVariable String username) {
+		StringBuilder sb = new StringBuilder("DELETE FROM user WHERE name='").append(name).append("' and role=")
+				.append(role).append(" and username='").append(username).append("' ;");
+		String query = sb.toString();
+		session.execute(query);
+		return ResponseEntity.ok("");
+	}
+
+	@ApiOperation("取得系統空間")
+	@RequestMapping(value = "/getSpace", method = RequestMethod.GET)
+	public ResponseEntity<?> getSpace() {
+		File[] roots = File.listRoots(); // 取得硬碟分區
+
+		Long total = 0L;
+		Long unuse = 0L;
+		Long folder = 0L;
+
+		File data = new File("/usr/local/tomcat/webapps");
+
+		for (File file : roots) {
+			file.getPath();
+			unuse = (file.getFreeSpace());
+			// us = " 可用：" + (file.getUsableSpace() / 1024 / 1024 / 1024) + " GB \t";
+			total = (file.getTotalSpace());
+		}
+		folder = (FileUtils.sizeOfDirectory(data));
+
+		Map<Object, Object> space = new HashMap<Object, Object>();
+		space.put("unuse", unuse);
+		space.put("total", total);
+		space.put("data", folder);
+		return ResponseEntity.ok(space);
+	}
+
+	private void authenticate(String username, String password) throws Exception {
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+		} catch (DisabledException e) {
+			throw new Exception("USER_DISABLED", e);
+		} catch (BadCredentialsException e) {
+			throw new Exception("INVALID_CREDENTIALS", e);
+		}
+	}
+}

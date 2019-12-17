@@ -43,7 +43,7 @@ public class SocketTest extends Thread {
 	private static HapiContext context = new DefaultHapiContext();
 	private static final int PORT_NUMBER = 9000;
 	String SERVER = "10.100.83.150";
-	String FILE = "CenterM3150.txt";
+	String FILE = "Center.txt";
 
 	Socket client = null;
 	Socket socket = null;
@@ -66,7 +66,7 @@ public class SocketTest extends Thread {
 
 	public void run() {
 		BufferedInputStream in;
-		BufferedOutputStream ToFrontend;
+		BufferedOutputStream ToMe;
 
 		System.out.println("TCP已連線 !");
 		// byte[] mybytearray = new byte[10240];
@@ -100,18 +100,18 @@ public class SocketTest extends Thread {
 			// logger.info("取得Frontend連線 ： " + socket);
 			byte[] mybytearray = new byte[10240];
 			int len = 0;
-			String FILE = "CenterM3150.txt";
-			// BufferedOutputStream ToMe;
-			// FileOutputStream file = new FileOutputStream(FILE);
-			// ToMe = new BufferedOutputStream(file);
-			// ToMe.write(mybytearray, 0, len);
-			// ToMe.flush();
-			// ToMe.close();
-			// ToFrontend = new BufferedOutputStream(socket.getOutputStream());
+			//String FILE = "CenterM3150.txt";
 			in = new BufferedInputStream(client.getInputStream());
-			FileWriter fw = new FileWriter(FILE);
-			fw.write(in.read(mybytearray,0,len));
-			fw.close();
+			 FileOutputStream file = new FileOutputStream(FILE);
+			 ToMe = new BufferedOutputStream(file);
+			 ToMe.write(in.read(mybytearray,0,len));
+			 ToMe.flush();
+			 ToMe.close();
+			// ToFrontend = new BufferedOutputStream(socket.getOutputStream());
+			
+			//FileWriter fw = new FileWriter(FILE);
+			//fw.write(in.read(mybytearray,0,len));
+			//fw.close();
 			parser();
 
 		} catch (IOException e) {

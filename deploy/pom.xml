@@ -111,6 +111,11 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.9.2</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
 		<!-- SSO <dependency> <groupId>sso.login</groupId> <artifactId>sso.src.login</artifactId> 
 			<scope>system</scope> <version>1.0</version> <systemPath>${basedir}/src/main/resources/lib/HGigaOAKsSSO.jar</systemPath> 
