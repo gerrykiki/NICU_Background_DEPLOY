@@ -66,25 +66,23 @@ public class SocketTest extends Thread {
 	public void run() {
 		BufferedInputStream in;
 		BufferedOutputStream ToMe;
-
+		BufferedOutputStream ToFrontend;
+		byte[] mybytearray = new byte[10240];
+		int len = 0;
 		System.out.println("TCP已連線 !");
 		try {
-			byte[] mybytearray = new byte[10240];
-			int len = 0;
-			//String FILE = "CenterM3150.txt";
-			in = new BufferedInputStream(client.getInputStream());
-			 FileOutputStream file = new FileOutputStream(FILE);
-			 ToMe = new BufferedOutputStream(file);
-			 ToMe.write(in.read(mybytearray,0,len));
-			 ToMe.flush();
-			 ToMe.close();
-			// ToFrontend = new BufferedOutputStream(socket.getOutputStream());
 			
-			//FileWriter fw = new FileWriter(FILE);
-			//fw.write(in.read(mybytearray,0,len));
-			//fw.close();
-
-			parser();
+			in = new BufferedInputStream(client.getInputStream());
+			
+			FileOutputStream file = new FileOutputStream(FILE);
+			ToMe = new BufferedOutputStream(file);
+			
+			while ((len = in.read(mybytearray, 0, mybytearray.length)) > 0) {
+				 ToMe.write(mybytearray, 0, len);
+				 ToMe.flush();
+				 //ToMe.close();
+				 parser();			
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -93,7 +91,7 @@ public class SocketTest extends Thread {
 	}
 
 	public void parser() throws FileNotFoundException {
-		FileReader reader = new FileReader("CenterM3150.txt");
+		FileReader reader = new FileReader("Center.txt");
 		Hl7InputStreamMessageIterator messageIterator = new Hl7InputStreamMessageIterator(reader);
 
 		while (messageIterator.hasNext()) {
