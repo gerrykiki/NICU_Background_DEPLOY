@@ -329,7 +329,7 @@ public class NisController {
 	}
 
 	@GetMapping("/QDC/{caseno}/{st}/{et}") // 輸出入量(兒)
-	public List<Map<Object, Object>> QDC(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
+	public Object QDC(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
 			throws Exception {
 		trustAllHttpsCertificates();
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
@@ -377,7 +377,7 @@ public class NisController {
 		} catch (IOException e) {
 		}
 		
-		return data;
+		return nnis;
 	}
 
 	@GetMapping("/QMNC/{caseno}") // 查詢出生週數資訊

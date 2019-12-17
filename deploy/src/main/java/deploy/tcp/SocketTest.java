@@ -40,10 +40,9 @@ import ca.uhn.hl7v2.parser.Parser;
 
 public class SocketTest extends Thread {
 
-	private static HapiContext context = new DefaultHapiContext();
 	private static final int PORT_NUMBER = 9000;
 	String SERVER = "10.100.83.150";
-	String FILE = "CenterM3150.txt";
+	String FILE = "Center.txt";
 
 	Socket client = null;
 	Socket socket = null;
@@ -66,53 +65,24 @@ public class SocketTest extends Thread {
 
 	public void run() {
 		BufferedInputStream in;
+		BufferedOutputStream ToMe;
 		BufferedOutputStream ToFrontend;
-
+		byte[] mybytearray = new byte[10240];
+		int len = 0;
 		System.out.println("TCP已連線 !");
-		// byte[] mybytearray = new byte[10240];
-
-		// try {
-
-		// ADT_A01 adtMessage = (ADT_A01) AdtMessageFactory.createMessage("A01");
-
-		// // create a new MLLP client over the specified port
-		// Connection connection = context.newClient(SERVER, PORT_NUMBER, false);
-
-		// // The initiator which will be used to transmit our message
-		// Initiator initiator = connection.getInitiator();
-
-		// // send the previously created HL7 message over the connection established
-		// Parser parser = context.getPipeParser();
-		// System.out.println("Sending message:" + "\n" + parser.encode(adtMessage));
-
-		// Message response = initiator.sendAndReceive(adtMessage);
-
-		// // display the message response received from the remote party
-		// String responseString = parser.encode(response);
-		// System.out.println("Received response:\n" + responseString);
-
-		// } catch (Exception e) {
-
-		// e.printStackTrace();
-		// }
 		try {
-			// socket = server.accept();
-			// logger.info("取得Frontend連線 ： " + socket);
-			byte[] mybytearray = new byte[10240];
-			int len = 0;
-			String FILE = "CenterM3150.txt";
-			// BufferedOutputStream ToMe;
-			// FileOutputStream file = new FileOutputStream(FILE);
-			// ToMe = new BufferedOutputStream(file);
-			// ToMe.write(mybytearray, 0, len);
-			// ToMe.flush();
-			// ToMe.close();
-			// ToFrontend = new BufferedOutputStream(socket.getOutputStream());
+			
 			in = new BufferedInputStream(client.getInputStream());
-			FileWriter fw = new FileWriter(FILE);
-			fw.write(in.read(mybytearray,0,len));
-			fw.close();
-			parser();
+			
+			FileOutputStream file = new FileOutputStream(FILE);
+			ToMe = new BufferedOutputStream(file);
+			
+			while ((len = in.read(mybytearray, 0, mybytearray.length)) > 0) {
+				 ToMe.write(mybytearray, 0, len);
+				 ToMe.flush();
+				 //ToMe.close();
+				 parser();			
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
