@@ -214,17 +214,8 @@ public class TableController {
 				Map<Object, Object> birweeksmap = birweeks.get(0);
 				String days_birth = (String) birweeksmap.get("days");
 				String weeks_birth = (String) birweeksmap.get("weeks");
-				String weeks_days_birth = "[" + weeks_birth + "+" + days_birth + "]";
-				filter.put("weeks_days_birth", weeks_days_birth);
-
-				// SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-				// Date date = sdf.parse(birthday);
-				// int timediff = (int) ((new Date().getTime() - date.getTime()) / (24 * 60 * 60 * 1000)) + parseInt(days_birth);
-				// int w = (timediff / 7) + parseInt(weeks_birth);
-				// int d = timediff % 7;
-				// String weeks_local_birth = "[" + w + "+" + d + "]";
-				// filter.put("weeks_local_birth", weeks_local_birth);
-
+				filter.put("WEEKS_BIRTH", weeks_birth);
+				filter.put("DAYSS_BIRTH", days_birth);
 
 
 				List<Map<Object, Object>> plocobject = PLOC(filter.get("PCASENO"));
