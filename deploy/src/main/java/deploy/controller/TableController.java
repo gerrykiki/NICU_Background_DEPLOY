@@ -133,13 +133,13 @@ public class TableController {
 				filter.put("PBIRTHDT", birthday);
 				filter.put("PPBLOOD", ppblood);
 
-				NisController nis = new NisController();
-				List<Map<Object, Object>> birweeks = nis.QMNC((String) filter.get("PCASENO"));
-				Map<Object, Object> birweeksmap = birweeks.get(0);
-				String days_birth = (String) birweeksmap.get("days");
-				String weeks_birth = (String) birweeksmap.get("weeks");
-				String weeks_days_birth = "[" + weeks_birth + "+" + days_birth + "]";
-				filter.put("weeks_days_birth", weeks_days_birth);
+				// NisController nis = new NisController();
+				// List<Map<Object, Object>> birweeks = nis.QMNC((String) filter.get("PCASENO"));
+				// Map<Object, Object> birweeksmap = birweeks.get(0);
+				// String days_birth = (String) birweeksmap.get("days");
+				// String weeks_birth = (String) birweeksmap.get("weeks");
+				// String weeks_days_birth = "[" + weeks_birth + "+" + days_birth + "]";
+				// filter.put("weeks_days_birth", weeks_days_birth);
 
 				List<Map<Object, Object>> plocobject = PLOC(filter.get("PCASENO"));
 				Collections.reverse(plocobject);
@@ -209,13 +209,13 @@ public class TableController {
 				filter.put("PBIRTHDT", birthday);
 				filter.put("PPBLOOD", ppblood);
 
-				NisController nis = new NisController();
-				List<Map<Object, Object>> birweeks = nis.QMNC((String) filter.get("PCASENO"));
-				Map<Object, Object> birweeksmap = birweeks.get(0);
-				String days_birth = (String) birweeksmap.get("days");
-				String weeks_birth = (String) birweeksmap.get("weeks");
-				filter.put("WEEKS_BIRTH", weeks_birth);
-				filter.put("DAYSS_BIRTH", days_birth);
+				// NisController nis = new NisController();
+				// List<Map<Object, Object>> birweeks = nis.QMNC((String) filter.get("PCASENO"));
+				// Map<Object, Object> birweeksmap = birweeks.get(0);
+				// String days_birth = (String) birweeksmap.get("days");
+				// String weeks_birth = (String) birweeksmap.get("weeks");
+				// filter.put("WEEKS_BIRTH", weeks_birth);
+				// filter.put("DAYSS_BIRTH", days_birth);
 
 
 				List<Map<Object, Object>> plocobject = PLOC(filter.get("PCASENO"));
