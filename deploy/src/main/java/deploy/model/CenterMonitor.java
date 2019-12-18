@@ -1,7 +1,5 @@
 package deploy.model;
 
-
-
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -19,13 +17,13 @@ public class CenterMonitor{
     private String phistnum;
     private Integer RR;
     private Integer HR;
-    private Integer ABP_d;
-    private Integer ABP_s;
-    private Integer ABP_m;
-    private Integer NBP_d;
-    private Integer NBP_s;
-    private Integer NBP_m;
-    private Integer sp;
+    private Integer ABPd;
+    private Integer ABPs;
+    private Integer ABPm;
+    private Integer NBPd;
+    private Integer NBPs;
+    private Integer NBPm;
+    private Integer spo2;
     private Float BT;
   //private Integer Wardvaluuid;   
     //private String typeString;

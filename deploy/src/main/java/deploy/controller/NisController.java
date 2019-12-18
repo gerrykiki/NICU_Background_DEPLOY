@@ -86,7 +86,7 @@ public class NisController {
 
 	/*---NIS---*/
 	@GetMapping("/QSPE/{caseno}/{st}/{et}") // 查詢特定時間特殊事件資訊
-	public List<Map<Object, Object>> QSPE(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
+	public Object QSPE(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
 			throws Exception {
 		trustAllHttpsCertificates();
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
@@ -129,7 +129,7 @@ public class NisController {
 		} catch (IOException e) {
 		}
 
-		return data;
+		return nnis;
 	}
 
 	@GetMapping("/TEST") // 查詢特定時間身高體重/體圍測量資訊
@@ -143,7 +143,7 @@ public class NisController {
 	}
 
 	@GetMapping("/QTWPER/{caseno}/{st}/{et}") // 查詢特定時間身高體重/體圍測量資訊
-	public List<Map<Object, Object>> QTWPER(@PathVariable String caseno, @PathVariable String st,
+	public Object QTWPER(@PathVariable String caseno, @PathVariable String st,
 			@PathVariable String et) throws Exception {
 		trustAllHttpsCertificates();
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
@@ -185,11 +185,11 @@ public class NisController {
 		} catch (IOException e) {
 		}
 
-		return data;
+		return nnis;
 	}
 
 	@GetMapping("/QPNOT/{caseno}/{st}/{et}") // 查詢特定時間護理紀錄資訊
-	public List<Map<Object, Object>> QPNOT(@PathVariable String caseno, @PathVariable String st,
+	public Object QPNOT(@PathVariable String caseno, @PathVariable String st,
 			@PathVariable String et) throws Exception {
 		trustAllHttpsCertificates();
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
@@ -233,11 +233,11 @@ public class NisController {
 		} catch (IOException e) {
 		}
 
-		return data;
+		return nnis;
 	}
 
 	@GetMapping("/QDVS/{caseno}/{st}/{et}") // 查詢特定時間生命徵象資訊
-	public List<Map<Object, Object>> QDVS(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
+	public Object QDVS(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
 			throws Exception {
 		trustAllHttpsCertificates();
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
@@ -284,11 +284,11 @@ public class NisController {
 		} catch (IOException e) {
 		}
 
-		return data;
+		return nnis;
 	}
 
 	@GetMapping("/QOXY/{caseno}/{st}/{et}") // 查詢特定時間氧合紀錄資訊
-	public List<Map<Object, Object>> QOXY(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
+	public Object QOXY(@PathVariable String caseno, @PathVariable String st, @PathVariable String et)
 			throws Exception {
 		trustAllHttpsCertificates();
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
@@ -331,7 +331,7 @@ public class NisController {
 		} catch (IOException e) {
 		}
 
-		return data;
+		return nnis;
 	}
 
 	@GetMapping("/QDC/{caseno}/{st}/{et}") // 輸出入量(兒)
@@ -364,35 +364,35 @@ public class NisController {
 					// if
 					// (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW")
 					// == 0) {
-					Map<Object, Object> filter = new HashMap<>();
-					if (eElement.getElementsByTagName("inp_val1") != null) {
-						filter.put("inp_val1", eElement.getElementsByTagName("inp_val1").item(0).getTextContent());
-					}
-					if (eElement.getElementsByTagName("inp_val2") != null) {
-						filter.put("inp_val2", eElement.getElementsByTagName("inp_val2").item(0).getTextContent());
-					}
-					if (eElement.getElementsByTagName("color") != null) {
-						filter.put("color", eElement.getElementsByTagName("color").item(0).getTextContent());
-					}
-					if (eElement.getElementsByTagName("item") != null) {
-						filter.put("item", eElement.getElementsByTagName("item").item(0).getTextContent());
-					}
-					if (eElement.getElementsByTagName("line") != null) {
-						filter.put("line", eElement.getElementsByTagName("line").item(0).getTextContent());
-					}
-					if (eElement.getElementsByTagName("nam") != null) {
-						filter.put("nam", eElement.getElementsByTagName("nam").item(0).getTextContent());
-					}
-					if (eElement.getElementsByTagName("out_val1") != null) {
-						filter.put("out_val1", eElement.getElementsByTagName("out_val1").item(0).getTextContent());
-					}
-					if (eElement.getElementsByTagName("out_val2") != null) {
-						filter.put("out_val2", eElement.getElementsByTagName("out_val2").item(0).getTextContent());
-					}
-					if (eElement.getElementsByTagName("Date") != null) {
-						filter.put("Date", eElement.getElementsByTagName("Date").item(0).getTextContent());
-					}
-					data.add(filter);
+//					Map<Object, Object> filter = new HashMap<>();
+//					if (eElement.getElementsByTagName("inp_val1") != null) {
+//						filter.put("inp_val1", eElement.getElementsByTagName("inp_val1").item(0).getTextContent());
+//					}
+//					if (eElement.getElementsByTagName("inp_val2") != null) {
+//						filter.put("inp_val2", eElement.getElementsByTagName("inp_val2").item(0).getTextContent());
+//					}
+//					if (eElement.getElementsByTagName("color") != null) {
+//						filter.put("color", eElement.getElementsByTagName("color").item(0).getTextContent());
+//					}
+//					if (eElement.getElementsByTagName("item") != null) {
+//						filter.put("item", eElement.getElementsByTagName("item").item(0).getTextContent());
+//					}
+//					if (eElement.getElementsByTagName("line") != null) {
+//						filter.put("line", eElement.getElementsByTagName("line").item(0).getTextContent());
+//					}
+//					if (eElement.getElementsByTagName("nam") != null) {
+//						filter.put("nam", eElement.getElementsByTagName("nam").item(0).getTextContent());
+//					}
+//					if (eElement.getElementsByTagName("out_val1") != null) {
+//						filter.put("out_val1", eElement.getElementsByTagName("out_val1").item(0).getTextContent());
+//					}
+//					if (eElement.getElementsByTagName("out_val2") != null) {
+//						filter.put("out_val2", eElement.getElementsByTagName("out_val2").item(0).getTextContent());
+//					}
+//					if (eElement.getElementsByTagName("Date") != null) {
+//						filter.put("Date", eElement.getElementsByTagName("Date").item(0).getTextContent());
+//					}
+//					data.add(filter);
 					// }
 				}
 			}
@@ -406,7 +406,7 @@ public class NisController {
 	}
 
 	@GetMapping("/QMNC/{caseno}") // 查詢出生週數資訊
-	public List<Map<Object, Object>> QMNC(@PathVariable String caseno) throws Exception {
+	public Object QMNC(@PathVariable String caseno) throws Exception {
 		trustAllHttpsCertificates();
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
 		HttpHeaders headers = new HttpHeaders();
@@ -435,10 +435,10 @@ public class NisController {
 					// if
 					// (eElement.getElementsByTagName("type").item(0).getTextContent().compareTo("TW")
 					// == 0) {
-					Map<Object, Object> filter = new HashMap<>();
-					filter.put("days", eElement.getElementsByTagName("days").item(0).getTextContent());
-					filter.put("weeks", eElement.getElementsByTagName("weeks").item(0).getTextContent());
-					data.add(filter);
+					//Map<Object, Object> filter = new HashMap<>();
+					//filter.put("days", eElement.getElementsByTagName("days").item(0).getTextContent());
+					//filter.put("weeks", eElement.getElementsByTagName("weeks").item(0).getTextContent());
+					//data.add(filter);
 					// }
 				}
 			}
@@ -448,7 +448,7 @@ public class NisController {
 		} catch (IOException e) {
 		}
 
-		return data;
+		return nnis;
 	}
 
 }

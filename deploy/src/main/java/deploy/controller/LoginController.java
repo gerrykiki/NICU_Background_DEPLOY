@@ -1,7 +1,9 @@
 package deploy.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
 
 import deploy.model.BodyUser;
@@ -33,9 +36,9 @@ public class LoginController {
 
 	private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("cassandra").withPort(9042)
 			.build();
-	 //private Cluster cluster =
-	 //Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
-	 //.build();
+	// private Cluster cluster =
+	// Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
+	// .build();
 	private Session session = cluster.connect("nicuspace");
 
 	@Autowired
@@ -70,6 +73,49 @@ public class LoginController {
 		String query = sb.toString();
 		session.execute(query);
 		return ResponseEntity.ok("");
+	}
+
+	@ApiOperation("查詢某帳號權限：1->read only 2->common user 3->common manager 4->system manager 5->super user")
+	@RequestMapping(value = "/getAuth/{name}/{role}", method = RequestMethod.GET)
+	public ResponseEntity<?> getAuthUser(@Valid @PathVariable String name, @Valid @PathVariable Integer role) {
+		StringBuilder sb = new StringBuilder("SELECT * FROM user WHERE name='").append(name).append("' and role=")
+				.append(role).append(" ALLOW FILTERING;");
+		String query = sb.toString();
+
+		List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
+
+		ResultSet rs = session.execute(query);
+		rs.forEach(r -> {
+			Map<Object, Object> usr = new HashMap<Object, Object>();
+			usr.put("username", r.getString("username"));
+			usr.put("name", r.getString("name"));
+			usr.put("role", r.getInt("role"));
+
+			list.add(usr);
+		});
+
+		return ResponseEntity.ok(list);
+	}
+	
+	@ApiOperation("取得全部資訊")
+	@RequestMapping(value = "/getAlluser/{name}/{role}", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllUser() {
+		StringBuilder sb = new StringBuilder("SELECT * FROM user ;");
+		String query = sb.toString();
+
+		List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
+
+		ResultSet rs = session.execute(query);
+		rs.forEach(r -> {
+			Map<Object, Object> usr = new HashMap<Object, Object>();
+			usr.put("username", r.getString("username"));
+			usr.put("name", r.getString("name"));
+			usr.put("role", r.getInt("role"));
+
+			list.add(usr);
+		});
+
+		return ResponseEntity.ok(list);
 	}
 
 	@ApiOperation("取得系統空間")

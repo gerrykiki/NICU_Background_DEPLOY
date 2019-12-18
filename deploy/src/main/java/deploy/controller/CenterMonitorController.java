@@ -71,8 +71,8 @@ public class CenterMonitorController {
 		for (CenterMonitor wv : list) {
 			if (wv.getPhistnum().equals(phistnum) && wv.getTime().before(EndTime) && wv.getTime().after(StartTime)) {
 				CenterMonitor data = new CenterMonitor(wv.getTime(), wv.getPhistnum(), wv.getRR(), wv.getHR(),
-						wv.getABP_d(), wv.getABP_s(), wv.getABP_m(), wv.getNBP_d(), wv.getNBP_s(), wv.getNBP_m(),
-						wv.getSp(), wv.getBT());
+						wv.getABPd(), wv.getABPs(), wv.getABPm(), wv.getNBPd(), wv.getNBPs(), wv.getNBPm(),
+						wv.getSpo2(), wv.getBT());
 				newlist.add(data);
 			}
 		}

@@ -2,41 +2,34 @@ package deploy.tcp;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Base64;
+
 import java.util.HashMap;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-import com.ibm.db2.jcc.am.le;
 
 import ca.uhn.hl7v2.util.Hl7InputStreamMessageIterator;
-import ca.uhn.hl7v2.DefaultHapiContext;
-import ca.uhn.hl7v2.HL7Exception;
-import ca.uhn.hl7v2.HapiContext;
-import ca.uhn.hl7v2.app.Connection;
-import ca.uhn.hl7v2.app.HL7Service;
-import ca.uhn.hl7v2.app.Initiator;
+
 import ca.uhn.hl7v2.model.Message;
 import ca.uhn.hl7v2.model.v23.group.*;
-import ca.uhn.hl7v2.model.v23.message.ADT_A01;
+
 import ca.uhn.hl7v2.model.v23.message.ORU_R01;
 import ca.uhn.hl7v2.model.v23.segment.MSH;
 import ca.uhn.hl7v2.model.v23.segment.OBR;
 import ca.uhn.hl7v2.model.v23.segment.OBX;
 import ca.uhn.hl7v2.model.v23.segment.PID;
 import ca.uhn.hl7v2.model.v23.segment.PV1;
-import ca.uhn.hl7v2.parser.Parser;
 
 public class SocketTest extends Thread {
 
@@ -50,7 +43,7 @@ public class SocketTest extends Thread {
 
 	private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("cassandra").withPort(9042)
 			.build();
-	private Session session = cluster.connect("nicu");
+	private Session session = cluster.connect("nicuspace");
 
 	public SocketTest() {
 		try {
@@ -66,22 +59,21 @@ public class SocketTest extends Thread {
 	public void run() {
 		BufferedInputStream in;
 		BufferedOutputStream ToMe;
-		BufferedOutputStream ToFrontend;
+
 		byte[] mybytearray = new byte[10240];
 		int len = 0;
 		System.out.println("TCP已連線 !");
 		try {
-			
+
 			in = new BufferedInputStream(client.getInputStream());
-			
-			FileOutputStream file = new FileOutputStream(FILE);
-			ToMe = new BufferedOutputStream(file);
-			
+
 			while ((len = in.read(mybytearray, 0, mybytearray.length)) > 0) {
-				 ToMe.write(mybytearray, 0, len);
-				 ToMe.flush();
-				 //ToMe.close();
-				 parser();			
+				FileOutputStream file = new FileOutputStream(FILE);
+				ToMe = new BufferedOutputStream(file);
+				ToMe.write(mybytearray, 0, len);
+				ToMe.flush();
+				ToMe.close();
+				parser();
 			}
 
 		} catch (IOException e) {
@@ -136,10 +128,12 @@ public class SocketTest extends Thread {
 				OBX obx13 = oruObs13.getOBX();
 				OBX obx14 = oruObs14.getOBX();
 				OBR obr0 = oruOrd.getOBR();
+
 				String pn = pid.getPatientName(0).encode();// PatientName
 				String HISID = "";
 				int j = pn.indexOf("^");
 				HISID = pn.substring(0, j);
+
 				String date = obr0.getObservationDateTime().encode();// date
 				String obsId_col1 = obx1.getObservationIdentifier().getComponent(1).encode();
 				String obx1_value = obx1.getObservationValue(0).encode();
@@ -169,6 +163,7 @@ public class SocketTest extends Thread {
 				String obx13_value = obx13.getObservationValue(0).encode();
 				String obsId_col14 = obx14.getObservationIdentifier().getComponent(1).encode();
 				String obx14_value = obx14.getObservationValue(0).encode();
+
 				HashMap<String, String> m3150 = new HashMap<String, String>();
 				m3150.put(obsId_col1, obx1_value);
 				m3150.put(obsId_col2, obx2_value);
@@ -184,6 +179,7 @@ public class SocketTest extends Thread {
 				m3150.put(obsId_col12, obx12_value);
 				m3150.put(obsId_col13, obx13_value);
 				m3150.put(obsId_col14, obx14_value);
+
 				Integer HR = (m3150.get("HR") != null ? Integer.parseInt(m3150.get("HR")) : 0);
 				Integer SpO2 = (m3150.get("SpO2") != null ? Integer.parseInt(m3150.get("SpO2")) : 0);
 				Integer RR = (m3150.get("RR") != null ? Integer.parseInt(m3150.get("RR")) : 0);
@@ -194,10 +190,12 @@ public class SocketTest extends Thread {
 				Integer NBPd = (m3150.get("NBPd") != null ? Integer.parseInt(m3150.get("NBPd")) : 0);
 				Integer NBPs = (m3150.get("NBPs") != null ? Integer.parseInt(m3150.get("NBPs")) : 0);
 				Integer NBPm = (m3150.get("NBPm") != null ? Integer.parseInt(m3150.get("NBPm")) : 0);
+
 				DateTimeFormatter originalFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 				LocalDateTime ldt = LocalDateTime.parse(date, originalFormat);
+
 				StringBuilder sb = new StringBuilder("INSERT INTO ").append("centermonitor")
-						.append("(time , phistnum , abp_d ,abp_m , abp_s ,bt ,hr ,nbp_d ,nbp_m ,nbp_s ,rr ,sp )")
+						.append("(time , phistnum , abpd ,abpm , abps ,bt ,hr ,nbpd ,nbpm ,nbps ,rr ,spo2 )")
 						.append("VALUES('").append(ldt).append("', '").append(HISID).append("',").append(ABPd)
 						.append(",").append(ABPs).append(", ").append(ABPm).append(", ").append(BT).append(",")
 						.append(HR).append(", ").append(NBPd).append(", ").append(NBPs).append(",").append(NBPm)

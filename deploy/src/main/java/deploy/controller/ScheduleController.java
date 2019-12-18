@@ -35,7 +35,7 @@ public class ScheduleController {
 			.build();
 	// private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
 	// 		.build();
-	private Session session = cluster.connect("nicu");
+	private Session session = cluster.connect("nicuspace");
 
 	@ApiOperation("建立排程資訊")
 	@RequestMapping(value = "/createschedule", method = RequestMethod.POST)
