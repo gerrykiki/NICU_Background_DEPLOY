@@ -16,6 +16,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,11 +50,13 @@ public class LoginController {
 
 	@ApiOperation("登入")
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody BodyUser authenticationRequest) throws Exception {
-
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody BodyUser user) throws Exception {
+		if (user.getUsername() == null || user.getPassword() == null || user.getUsername().equals("")
+				|| user.getPassword().equals("")) {
+			throw new UsernameNotFoundException("Username or Password can not empty !");
+		}
+		authenticate(user.getUsername(), user.getPassword());
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
 
 		return ResponseEntity.ok(userDetails.getUsername());
 	}
@@ -61,6 +64,10 @@ public class LoginController {
 	@ApiOperation("新增/更新帳號")
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
+		if (user.getUsername() == null || user.getPassword() == null || user.getUsername().equals("")
+				|| user.getPassword().equals("")) {
+			throw new UsernameNotFoundException("Username or Password can not empty !");
+		}
 		return ResponseEntity.ok(userDetailsService.save(user));
 	}
 
@@ -76,8 +83,30 @@ public class LoginController {
 	}
 
 	@ApiOperation("查詢某帳號權限：1->read only 2->common user 3->common manager 4->system manager 5->super user")
-	@RequestMapping(value = "/getAuth/{name}/{role}", method = RequestMethod.GET)
-	public ResponseEntity<?> getAuthUser(@Valid @PathVariable String name, @Valid @PathVariable Integer role) {
+	@RequestMapping(value = "/getAuth/{username}", method = RequestMethod.GET)
+	public ResponseEntity<?> getAuthUser(@Valid @PathVariable String username) {
+		StringBuilder sb = new StringBuilder("SELECT * FROM user WHERE username='").append(username)
+				.append("' ALLOW FILTERING;");
+		String query = sb.toString();
+
+		List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
+
+		ResultSet rs = session.execute(query);
+		rs.forEach(r -> {
+			Map<Object, Object> usr = new HashMap<Object, Object>();
+			usr.put("username", r.getString("username"));
+			usr.put("name", r.getString("name"));
+			usr.put("role", r.getInt("role"));
+
+			list.add(usr);
+		});
+
+		return ResponseEntity.ok(list);
+	}
+
+	@ApiOperation("角色、姓名搜尋其內容")
+	@RequestMapping(value = "/searchUser/{name}/{role}", method = RequestMethod.GET)
+	public ResponseEntity<?> getUser(@Valid @PathVariable String name, @Valid @PathVariable Integer role) {
 		StringBuilder sb = new StringBuilder("SELECT * FROM user WHERE name='").append(name).append("' and role=")
 				.append(role).append(" ALLOW FILTERING;");
 		String query = sb.toString();
@@ -96,9 +125,9 @@ public class LoginController {
 
 		return ResponseEntity.ok(list);
 	}
-	
+
 	@ApiOperation("取得全部資訊")
-	@RequestMapping(value = "/getAlluser/{name}/{role}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getAlluser", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllUser() {
 		StringBuilder sb = new StringBuilder("SELECT * FROM user ;");
 		String query = sb.toString();
