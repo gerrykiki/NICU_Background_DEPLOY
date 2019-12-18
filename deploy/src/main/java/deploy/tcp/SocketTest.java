@@ -35,6 +35,7 @@ public class SocketTest extends Thread {
 
 	private static final int PORT_NUMBER = 9000;
 	String SERVER = "10.100.83.150";
+	//String SERVER = "127.0.0.1";
 	String FILE = "Center.txt";
 
 	Socket client = null;

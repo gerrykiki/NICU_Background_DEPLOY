@@ -23,7 +23,7 @@ import deploy.model.UserDTO;
 public class UserService implements UserDetailsService {
 
 	private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("cassandra").withPort(9042)
-			.build();
+			.build();;
 	 //private Cluster cluster =
 	 //Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
 	 //.build();

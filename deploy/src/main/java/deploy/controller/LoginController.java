@@ -64,9 +64,8 @@ public class LoginController {
 	@ApiOperation("新增/更新帳號")
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
-		if (user.getUsername() == null || user.getPassword() == null || user.getUsername().equals("")
-				|| user.getPassword().equals("")) {
-			throw new UsernameNotFoundException("Username or Password can not empty !");
+		if (user.getUsername() == null || user.getUsername().equals("")) {
+			throw new UsernameNotFoundException("Username can not empty !");
 		}
 		return ResponseEntity.ok(userDetailsService.save(user));
 	}

@@ -35,9 +35,9 @@ public class AnnouncementController {
 	
 	private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("cassandra").withPort(9042)
 			.build();
-	// private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
-	// 		.build();
-	private Session session = cluster.connect("nicu");
+	 //private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
+	 		//.build();
+	private Session session = cluster.connect("nicuspace");
     
 	@ApiOperation("建立公告資訊")
     @RequestMapping(value = "/createAnnouncement", method = RequestMethod.POST)

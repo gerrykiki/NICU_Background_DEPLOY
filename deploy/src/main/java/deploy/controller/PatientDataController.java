@@ -31,11 +31,11 @@ public class PatientDataController {
 	@Autowired
 	PatientRepository patientRepository;
 
-	 private Cluster cluster =
-	 Cluster.builder().withoutJMXReporting().addContactPoint("cassandra").withPort(9042)
-	 .build();
-	//private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
-			//.build();
+	private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("cassandra").withPort(9042)
+			.build();
+	// private Cluster cluster =
+	// Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
+	// .build();
 	private Session session = cluster.connect("nicuspace");
 
 	@ApiOperation("填寫基本資料")
@@ -71,11 +71,10 @@ public class PatientDataController {
 	}
 
 	@ApiOperation("取得某位病人資訊")
-	@RequestMapping(value = "/getOnepatient/{transinid}/{pacseno}/{phistnum}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getOnepatient/{transinid}", method = RequestMethod.GET)
 	public ResponseEntity<Object> getOnepatient(@Valid @PathVariable String transinid,
 			@Valid @PathVariable String pacseno, @Valid @PathVariable String phistnum) {
 		StringBuilder sb = new StringBuilder("SELECT * FROM patient WHERE transinid='").append(transinid)
-				.append("' and caseid='").append(pacseno).append("' and hisid='").append(phistnum)
 				.append("' ALLOW FILTERING;");
 		String query = sb.toString();
 
