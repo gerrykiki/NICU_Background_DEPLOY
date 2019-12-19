@@ -94,7 +94,7 @@ public class NisController {
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
 		HttpEntity<String> entityNNIS = new HttpEntity<String>(headers);
 		ResponseEntity<String> resp = restTemplate.exchange(
-				"http://10.97.235.18:9080/NPIWS/service/Nnis/QSPE/NIMA/" + caseno + "/" + st + "/" + et, HttpMethod.GET,
+				"http://10.121.11.180:8080/NPIWS/service/Nnis/QSPE/NIMA/" + caseno + "/" + st + "/" + et, HttpMethod.GET,
 				entityNNIS, String.class);
 		String nnis = resp.getBody();
 
@@ -152,7 +152,7 @@ public class NisController {
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
 		HttpEntity<String> entityNNIS = new HttpEntity<String>(headers);
 		ResponseEntity<String> resp = restTemplate.exchange(
-				"http://10.97.235.18:9080/NPIWS/service/Nnis/QTWPER/NIMA/" + caseno + "/" + st + "/" + et,
+				"http://10.121.11.180:8080/NPIWS/service/Nnis/QTWPER/NIMA/" + caseno + "/" + st + "/" + et,
 				HttpMethod.GET, entityNNIS, String.class);
 		String nnis = resp.getBody();
 
@@ -197,7 +197,7 @@ public class NisController {
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
 		HttpEntity<String> entityNNIS = new HttpEntity<String>(headers);
 		ResponseEntity<String> resp = restTemplate.exchange(
-				"http://10.97.235.18:9080/NPIWS/service/Nnis/QPNOT/NIMA/" + caseno + "/" + st + "/" + et,
+				"http://10.121.11.180:8080/NPIWS/service/Nnis/QPNOT/NIMA/" + caseno + "/" + st + "/" + et,
 				HttpMethod.GET, entityNNIS, String.class);
 		String nnis = resp.getBody();
 
@@ -245,7 +245,7 @@ public class NisController {
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
 		HttpEntity<String> entityNNIS = new HttpEntity<String>(headers);
 		ResponseEntity<String> resp = restTemplate.exchange(
-				"http://10.97.235.18:9080/NPIWS/service/Nnis/QDVS/NIMA/" + caseno + "/" + st + "/" + et, HttpMethod.GET,
+				"http://10.121.11.180:8080/NPIWS/service/Nnis/QDVS/NIMA/" + caseno + "/" + st + "/" + et, HttpMethod.GET,
 				entityNNIS, String.class);
 		String nnis = resp.getBody();
 
@@ -296,7 +296,7 @@ public class NisController {
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
 		HttpEntity<String> entityNNIS = new HttpEntity<String>(headers);
 		ResponseEntity<String> resp = restTemplate.exchange(
-				"http://10.97.235.18:9080/NPIWS/service/Nnis/QOXY/NIMA/" + caseno + "/" + st + "/" + et, HttpMethod.GET,
+				"http://10.121.11.180:8080/NPIWS/service/Nnis/QOXY/NIMA/" + caseno + "/" + st + "/" + et, HttpMethod.GET,
 				entityNNIS, String.class);
 		String nnis = resp.getBody();
 
@@ -342,7 +342,7 @@ public class NisController {
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
 		HttpEntity<String> entityNNIS = new HttpEntity<String>(headers);
 		ResponseEntity<String> resp = restTemplate.exchange(
-				"http://10.97.235.18:9080/NPIWS/service/Nnis/QDC/NIMA/" + caseno + "/" + st + "/" + et, HttpMethod.GET,
+				"http://10.121.11.180:8080/NPIWS/service/Nnis/QDC/NIMA/" + caseno + "/" + st + "/" + et, HttpMethod.GET,
 				entityNNIS, String.class);
 		String nnis = resp.getBody();
 
@@ -413,7 +413,7 @@ public class NisController {
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
 		HttpEntity<String> entityNNIS = new HttpEntity<String>(headers);
 		ResponseEntity<String> resp = restTemplate.exchange(
-				"http://10.97.235.18:9080/NPIWS/service/Nnis/QMNC/NIMA/" + caseno, HttpMethod.GET, entityNNIS,
+				"http://10.121.11.180:8080/NPIWS/service/Nnis/QMNC/NIMA/" + caseno, HttpMethod.GET, entityNNIS,
 				String.class);
 		String nnis = resp.getBody();
 

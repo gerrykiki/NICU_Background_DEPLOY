@@ -30,8 +30,10 @@ import com.datastax.driver.core.Session;
 import deploy.model.BodyUser;
 import deploy.model.UserDTO;
 import deploy.service.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+@Api(description = "登入與權限設定")
 @RestController
 public class LoginController {
 
