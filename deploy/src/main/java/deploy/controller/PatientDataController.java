@@ -33,9 +33,9 @@ public class PatientDataController {
 
 	private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("cassandra").withPort(9042)
 			.build();
-	// private Cluster cluster =
-	// Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
-	// .build();
+	 //private Cluster cluster =
+	 //Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
+	 //.build();
 	private Session session = cluster.connect("nicuspace");
 
 	@ApiOperation("填寫基本資料")
@@ -82,9 +82,8 @@ public class PatientDataController {
 
 		ResultSet rs = session.execute(query);
 		rs.forEach(r -> {
-			list.add(
-					new Patient(r.getString("caseid"), r.getString("hisid"), r.getString("pnamec"), r.getString("psex"),
-							r.getString("transindays"), r.getString("transintime"), r.getString("transinid")));
+			list.add(new Patient(r.getString("caseid"), r.getString("hisid"), r.getString("pnamec"),
+					r.getString("psex"), r.getString("transintime"),r.getString("transintime"), r.getString("transinid")));
 		});
 
 		return ResponseEntity.ok(list);

@@ -6,7 +6,7 @@ import org.springframework.data.cassandra.core.mapping.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Table("patient")
+@Table("patientdata")
 @Data
 @AllArgsConstructor
 public class Patient {

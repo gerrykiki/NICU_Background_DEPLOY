@@ -1,13 +1,14 @@
 package deploy.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,20 +47,20 @@ public class PatientImportantMatterController {
 		return ResponseEntity.ok(list);
 	}
     
-	@ApiOperation("刪除某日資訊")
-    @RequestMapping(value = "/delpatientimportantmatter/{date}", method = RequestMethod.DELETE)
-	public ResponseEntity<String> delPatientimportantmatter(@Valid @PathVariable @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") Date date) {	 		 
-    	 Boolean result = repository.existsById(date);
+	@ApiOperation("刪除某人資訊")
+    @RequestMapping(value = "/delpatientimportantmatter/{transinid}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> delPatientimportantmatter(@Valid @PathVariable String transinid) {	 		 
+    	 Boolean result = repository.existsById(transinid);
 		 if(result) {
-			 repository.deleteById(date);
+			 repository.deleteById(transinid);
 		 }	 		
 		return ResponseEntity.ok("{ \"success\" : "+ (result ? "true" : "false") +" }" );
 	}
 	
 	@ApiOperation("取得某位病人資訊")
     @RequestMapping(value = "/getOnepatient/{HISID}", method = RequestMethod.GET)
-	public ResponseEntity<Object> getOnepatient(@Valid @PathVariable String HISID) {	 		 
-		List<PatientImportantMatter> list = repository.findByHisid(HISID);
+	public ResponseEntity<Object> getOnepatient(@Valid @PathVariable String transinid) {	 		 
+		Optional<PatientImportantMatter> list = repository.findById(transinid);
 		 	 		
 		return ResponseEntity.ok(list);
 	}

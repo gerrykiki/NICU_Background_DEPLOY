@@ -39,9 +39,9 @@ public class LoginController {
 
 	private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("cassandra").withPort(9042)
 			.build();
-	// private Cluster cluster =
-	// Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
-	// .build();
+	 //private Cluster cluster =
+	 //Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
+	 //.build();
 	private Session session = cluster.connect("nicuspace");
 
 	@Autowired
