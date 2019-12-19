@@ -81,7 +81,7 @@ public class LoginController {
 		return ResponseEntity.ok("");
 	}
 
-	@ApiOperation("查詢某帳號權限：1->read only 2->common user 3->common manager 4->system manager 5->super user")
+	@ApiOperation("查詢某帳號權限：1->read only 2->general user 3->general manager 4->system manager 5->super user")
 	@RequestMapping(value = "/getAuth/{username}", method = RequestMethod.GET)
 	public ResponseEntity<?> getAuthUser(@Valid @PathVariable String username) {
 		StringBuilder sb = new StringBuilder("SELECT * FROM user WHERE username='").append(username)
