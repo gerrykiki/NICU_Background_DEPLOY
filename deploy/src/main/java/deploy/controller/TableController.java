@@ -59,12 +59,13 @@ public class TableController {
 			while (rs.next()) {
 
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					if (rs.getMetaData().getColumnName(i).compareTo("PBIRTHDT") == 0) {
-						mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
-					}
-					if (rs.getMetaData().getColumnName(i).compareTo("PPBLOOD") == 0) {
-						mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
-					}
+					// if (rs.getMetaData().getColumnName(i).compareTo("PBIRTHDT") == 0) {
+					// 	mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					// }
+					// if (rs.getMetaData().getColumnName(i).compareTo("PPBLOOD") == 0) {
+					// 	mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					// }
+					mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
 				// data.add(mm);
 			}
