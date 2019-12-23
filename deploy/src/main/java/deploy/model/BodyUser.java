@@ -7,8 +7,8 @@ public class BodyUser implements Serializable {
 
 	private String username;
 	private String password;
-	private int role;
-	private String name;
+	//private int role;
+	//private String name;
 
 	public BodyUser() {
 
@@ -17,8 +17,8 @@ public class BodyUser implements Serializable {
 	public BodyUser(String username, String password, int role, String name) {
 		this.setUsername(username);
 		this.setPassword(password);
-		this.setRole(role);
-		this.setName(password);
+		//this.setRole(role);
+		//this.setName(password);
 	}
 
 	public String getUsername() {
@@ -37,7 +37,7 @@ public class BodyUser implements Serializable {
 		this.password = password;
 	}
 
-	public String getName() {
+	/*public String getName() {
 		return name;
 	}
 
@@ -51,5 +51,5 @@ public class BodyUser implements Serializable {
 
 	public void setRole(int role) {
 		this.role = role;
-	}
+	}*/
 }

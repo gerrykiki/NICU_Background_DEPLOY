@@ -149,7 +149,7 @@ public class TableController {
 				String transindays = (String) plocdata.get("PLOCTM");
 				String transinid = "NICU" + (String) plocdata.get("PLOCDT") + (String) plocdata.get("PLOCTM");
 				Patient h = new Patient(filter.get("PCASENO").toString(), filter.get("PHISTNUM").toString(),
-						filter.get("PNAMEC").toString(), filter.get("PSEX").toString(), transindays, transintime,
+						filter.get("PNAMEC").toString(), filter.get("PSEX").toString(), transintime,
 						transinid);
 				patientrepository.save(h);
 				data.add(filter);
@@ -226,7 +226,7 @@ public class TableController {
 				String transindays = (String) plocdata.get("PLOCTM");
 				String transinid = "NICU" + (String) plocdata.get("PLOCDT") + (String) plocdata.get("PLOCTM");
 				Patient h = new Patient(filter.get("PCASENO").toString(), filter.get("PHISTNUM").toString(),
-						filter.get("PNAMEC").toString(), filter.get("PSEX").toString(), transindays, transintime,
+						filter.get("PNAMEC").toString(), filter.get("PSEX").toString(), transintime,
 						transinid);
 				patientrepository.save(h);
 				data.add(filter);

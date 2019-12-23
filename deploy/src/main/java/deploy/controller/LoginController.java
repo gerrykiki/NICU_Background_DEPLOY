@@ -39,9 +39,9 @@ public class LoginController {
 
 	private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("cassandra").withPort(9042)
 			.build();
-	 //private Cluster cluster =
-	 //Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
-	 //.build();
+	// private Cluster cluster =
+	// Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
+	// .build();
 	private Session session = cluster.connect("nicuspace");
 
 	@Autowired
@@ -63,7 +63,7 @@ public class LoginController {
 		return ResponseEntity.ok(userDetails.getUsername());
 	}
 
-	@ApiOperation("新增/更新帳號")
+	@ApiOperation("新增帳號與權限")
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
 		if (user.getUsername() == null || user.getUsername().equals("")) {
@@ -127,7 +127,7 @@ public class LoginController {
 		return ResponseEntity.ok(list);
 	}
 
-	@ApiOperation("取得全部資訊")
+	/*@ApiOperation("取得全部資訊")
 	@RequestMapping(value = "/getAlluser", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllUser() {
 		StringBuilder sb = new StringBuilder("SELECT * FROM user ;");
@@ -146,7 +146,7 @@ public class LoginController {
 		});
 
 		return ResponseEntity.ok(list);
-	}
+	}*/
 
 	@ApiOperation("取得系統空間")
 	@RequestMapping(value = "/getSpace", method = RequestMethod.GET)

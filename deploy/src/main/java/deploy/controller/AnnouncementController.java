@@ -29,24 +29,34 @@ import io.swagger.annotations.ApiOperation;
 @Controller
 @RequestMapping("/Announcement")
 public class AnnouncementController {
-	
+
 	@Autowired
-    AnnouncementRepository announcementRepository;
-	
+	AnnouncementRepository announcementRepository;
+
 	private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("cassandra").withPort(9042)
 			.build();
-	 //private Cluster cluster = Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
-	 		//.build();
+	// private Cluster cluster =
+	// Cluster.builder().withoutJMXReporting().addContactPoint("127.0.0.1").withPort(7777)
+	// .build();
 	private Session session = cluster.connect("nicuspace");
-    
+
 	@ApiOperation("建立公告資訊")
-    @RequestMapping(value = "/createAnnouncement", method = RequestMethod.POST)
-	public ResponseEntity<Announcementboard> createAnnouncement(@Valid @RequestBody Announcementboard announcement) {
+	@RequestMapping(value = "/createAnnouncement", method = RequestMethod.POST)
+	public ResponseEntity<?> createAnnouncement(@Valid @RequestBody List<Announcementboard> announcement) {
+		announcementRepository.deleteAll();
 		
-		Announcementboard _announcement = announcementRepository.save(announcement);
-		return new ResponseEntity<>(_announcement, HttpStatus.OK);
+		List<Announcementboard> annList = new ArrayList<Announcementboard>();
+		
+		announcement.forEach(ann -> {
+			Announcementboard _announcement = new Announcementboard(ann.getTransinno(), ann.getTime(), ann.getContext(),
+					ann.getEditor());
+			annList.add(_announcement);
+			announcementRepository.save(_announcement);
+		});
+
+		return new ResponseEntity<>(annList, HttpStatus.OK);
 	}
-	
+
 	@ApiOperation("取得全部資訊")
 	@RequestMapping(value = "/getAllannounce", method = RequestMethod.GET)
 	public ResponseEntity<Object> getAnnouncement() {
@@ -55,31 +65,35 @@ public class AnnouncementController {
 		result.forEach(annList::add);
 		return ResponseEntity.ok(annList);
 	}
-	
-	@ApiOperation("刪除某人某天公告資訊")
-	@RequestMapping(value = "/delannouncement/{transinno}/{date}", method = RequestMethod.DELETE)
-	public ResponseEntity<Object> delAnnouncement(@Valid @PathVariable String transinno,
-			@Valid @PathVariable String date) {
-		StringBuilder sb = new StringBuilder("DELETE FROM announcementboard WHERE transinno='").append(transinno)
-				.append("' and time='").append(date).append("' ;");			
-		String query = sb.toString();
-		
-		session.execute(query);
-				
-		return ResponseEntity.ok("");
-	}
-	
+
+	/*
+	 * @ApiOperation("刪除某人某天公告資訊")
+	 * 
+	 * @RequestMapping(value = "/delannouncement/{transinno}/{date}", method =
+	 * RequestMethod.DELETE) public ResponseEntity<Object>
+	 * delAnnouncement(@Valid @PathVariable String transinno,
+	 * 
+	 * @Valid @PathVariable String date) { StringBuilder sb = new
+	 * StringBuilder("DELETE FROM announcementboard WHERE transinno='").append(
+	 * transinno) .append("' and time='").append(date).append("' ;"); String query =
+	 * sb.toString();
+	 * 
+	 * session.execute(query);
+	 * 
+	 * return ResponseEntity.ok(""); }
+	 */
+
 	@ApiOperation("取得某位病人某天資訊")
 	@RequestMapping(value = "/getOneannouncement/{transinno}/{date}", method = RequestMethod.GET)
 	public ResponseEntity<Object> getOnepatient(@Valid @PathVariable String transinno,
 			@Valid @PathVariable String date) {
 		List<Announcementboard> list = new ArrayList<Announcementboard>();
-		
+
 		StringBuilder sb = new StringBuilder("SELECT * FROM announcementboard WHERE transinno='").append(transinno)
-				.append("' and time='").append(date).append("' ALLOW FILTERING;");			
+				.append("' and time='").append(date).append("' ALLOW FILTERING;");
 		String query = sb.toString();
-		
-		ResultSet rs = session.execute(query);		
+
+		ResultSet rs = session.execute(query);
 		rs.forEach(r -> {
 			list.add(new Announcementboard(r.getString("transinno"), r.getTimestamp("time"), r.getString("editor"),
 					r.getString("context")));

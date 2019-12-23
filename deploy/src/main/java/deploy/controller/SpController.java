@@ -1125,4 +1125,125 @@ public class SpController {
 		return data;
 	}
 	
+	@GetMapping("/OPSORAQ1/{hisid}")
+	public List<Object> OPSORAQ1(@PathVariable String hisid) {
+
+		Connection conn = null;
+		ResultSet rs = null;
+		CallableStatement cs;
+		List<Object> data = new ArrayList<Object>();
+
+		try {
+			Class.forName(driver).newInstance();
+
+			conn = (Connection) DriverManager.getConnection(url, userName, passWord);
+
+			cs = (CallableStatement) conn.prepareCall("CALL VGHTPEVG.OPSORAQ1(?,?)");
+
+			cs.setString(1, hisid);
+			cs.registerOutParameter(2, Types.INTEGER);
+			cs.execute();
+
+			rs = (ResultSet) cs.executeQuery();
+
+			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+				}
+				data.add(filter);
+			}
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("error:" + e.getMessage());
+			System.out.println(e.toString());
+		}
+		return data;
+	}
+	
+	@GetMapping("/OPSORAQ2/{hisid}/{date}/{times}")
+	public List<Object> OPSORAQ2(@PathVariable String hisid,@PathVariable String date,@PathVariable String times) {
+
+		Connection conn = null;
+		ResultSet rs = null;
+		CallableStatement cs;
+		List<Object> data = new ArrayList<Object>();
+
+		try {
+			Class.forName(driver).newInstance();
+
+			conn = (Connection) DriverManager.getConnection(url, userName, passWord);
+
+			cs = (CallableStatement) conn.prepareCall("CALL VGHTPEVG.OPSORAQ2(?,?,?,?)");
+
+			cs.setString(1, hisid);
+			cs.setString(2, date);
+			cs.setString(3, times);
+			cs.registerOutParameter(4, Types.INTEGER);
+			cs.execute();
+			
+			rs = (ResultSet) cs.executeQuery();
+
+			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+				}
+				data.add(filter);
+			}
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("error:" + e.getMessage());
+			System.out.println(e.toString());
+		}
+		return data;
+	}
+	
+	@GetMapping("/RESDNM2/{hisid}/{date}")
+	public List<Object> RESDNM2(@PathVariable String hisid,@PathVariable String date) {
+
+		Connection conn = null;
+		ResultSet rs = null;
+		CallableStatement cs;
+		List<Object> data = new ArrayList<Object>();
+
+		try {
+			Class.forName(driver).newInstance();
+
+			conn = (Connection) DriverManager.getConnection(url, userName, passWord);
+
+			cs = (CallableStatement) conn.prepareCall("CALL VGHTPEVG.RESDNM2(?,?,?)");
+
+			cs.setString(1, hisid);
+			cs.setString(2, date);
+			cs.registerOutParameter(3, Types.INTEGER);
+			cs.execute();
+
+			rs = (ResultSet) cs.executeQuery();
+
+			while (rs.next()) {
+				Map<Object, Object> filter = new HashMap<>();
+				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+					filter.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+				}
+				data.add(filter);
+			}
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("error:" + e.getMessage());
+			System.out.println(e.toString());
+		}
+		return data;
+	}
+
+	
 }
