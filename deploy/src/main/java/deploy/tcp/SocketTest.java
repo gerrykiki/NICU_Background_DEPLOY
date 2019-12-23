@@ -1,7 +1,6 @@
 package deploy.tcp;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -59,7 +58,6 @@ public class SocketTest extends Thread {
 
 	public void run() {
 		BufferedInputStream in;
-		BufferedOutputStream ToMe;
 
 		byte[] mybytearray = new byte[10240];
 		int len = 0;
@@ -67,13 +65,12 @@ public class SocketTest extends Thread {
 		try {
 
 			in = new BufferedInputStream(client.getInputStream());
-
+			
 			while ((len = in.read(mybytearray, 0, mybytearray.length)) > 0) {
-				FileOutputStream file = new FileOutputStream(FILE);
-				ToMe = new BufferedOutputStream(file);
-				ToMe.write(mybytearray, 0, len);
-				ToMe.flush();
-				ToMe.close();
+				FileOutputStream file = new FileOutputStream(FILE, false);
+				file.write(mybytearray, 0, len);
+				file.flush();
+				file.close();				
 				parser();
 			}
 
@@ -82,6 +79,7 @@ public class SocketTest extends Thread {
 		}
 
 	}
+
 
 	public void parser() throws FileNotFoundException {
 		FileReader reader = new FileReader("Center.txt");
