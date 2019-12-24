@@ -172,7 +172,11 @@ public class ExportImportController {
 		jsonObj.put("patientremark", patientremarklist);
 		jsonObj.put("patientimportant", patientimportantmatterlist);
 
-		String filename = "export_transinno_" + transinno + ".json";
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		Date now = new Date();
+		String dateNow = df.format(now);
+
+		String filename = "export_transinno_" + transinno + "_" + dateNow + ".json";
 
 		Files.write(Paths.get(filename), jsonObj.toJSONString().getBytes());
 
@@ -180,11 +184,11 @@ public class ExportImportController {
 	}
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/importJson/{transinno}", method = RequestMethod.GET)
-	public ResponseEntity<?> importJson(@Valid @PathVariable String transinno) {
-		String filename = "export_transinno_" + transinno + ".json";
+	@RequestMapping(value = "/importJson/{transinno}/{date}", method = RequestMethod.GET)
+	public ResponseEntity<?> importJson(@Valid @PathVariable String transinno, @Valid @PathVariable String dateSome) {
+		String filename = "export_transinno_" + transinno + "_" + dateSome + ".json";
 		JSONParser jsonParser = new JSONParser();
-		
+
 		List<JSONObject> announcementList = new ArrayList<JSONObject>();
 		List<JSONObject> scheduleList = new ArrayList<JSONObject>();
 		List<JSONObject> noticeList = new ArrayList<JSONObject>();
@@ -225,7 +229,7 @@ public class ExportImportController {
 						.append(dataTodo.get("type").toString()).append("');");
 				String query = sb.toString();
 				session.execute(query);
-				
+
 				todoList.add(dataTodo);
 
 			});
@@ -253,7 +257,7 @@ public class ExportImportController {
 						.append(dataSchedule.get("type").toString()).append("');");
 				String query = sb.toString();
 				session.execute(query);
-				
+
 				scheduleList.add(dataSchedule);
 			});
 
@@ -281,7 +285,7 @@ public class ExportImportController {
 						.append(dataPatient.get("caseid").toString()).append("');");
 				String query = sb.toString();
 				session.execute(query);
-				
+
 				patientList.add(dataPatient);
 			});
 
@@ -307,7 +311,7 @@ public class ExportImportController {
 						.append(dataAnnouncement.get("editor").toString()).append("');");
 				String query = sb.toString();
 				session.execute(query);
-				
+
 				announcementList.add(dataAnnouncement);
 
 			});
@@ -334,7 +338,7 @@ public class ExportImportController {
 						.append(dataNotice.get("context").toString()).append("');");
 				String query = sb.toString();
 				session.execute(query);
-				
+
 				noticeList.add(dataNotice);
 
 			});
@@ -362,7 +366,7 @@ public class ExportImportController {
 						.append(dataRemark.get("name").toString()).append("');");
 				String query = sb.toString();
 				session.execute(query);
-				
+
 				remarkList.add(dataRemark);
 
 			});
@@ -378,7 +382,7 @@ public class ExportImportController {
 						.append(dataPatientremark.get("context").toString()).append("');");
 				String query = sb.toString();
 				session.execute(query);
-				
+
 				patientremarkList.add(dataPatientremark);
 
 			});
@@ -406,7 +410,7 @@ public class ExportImportController {
 						.append(dataPatientimportantmatter.get("editor").toString()).append("');");
 				String query = sb.toString();
 				session.execute(query);
-				
+
 				patientimportantmatterList.add(dataPatientimportantmatter);
 
 			});
@@ -418,7 +422,7 @@ public class ExportImportController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("announcement", announcementList);
 		jsonObj.put("schedule", scheduleList);

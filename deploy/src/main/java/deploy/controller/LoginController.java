@@ -1,7 +1,10 @@
 package deploy.controller;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +30,9 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
 
+import deploy.Repository.LoginlogRepository;
 import deploy.model.BodyUser;
+import deploy.model.LoginLog;
 import deploy.model.UserDTO;
 import deploy.service.UserService;
 import io.swagger.annotations.Api;
@@ -46,6 +51,9 @@ public class LoginController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	LoginlogRepository loginlogRepository;
 
 	@Autowired
 	private UserService userDetailsService;
@@ -59,8 +67,20 @@ public class LoginController {
 		}
 		authenticate(user.getUsername(), user.getPassword());
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+		
+		insertLoginlog(user.getUsername());
 
 		return ResponseEntity.ok(userDetails.getUsername());
+	}
+	
+	public void insertLoginlog(String username) throws ParseException {
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		Date now = new Date();
+		String dateF = df.format(now);
+		Date date = df.parse(dateF);
+		
+		LoginLog loginlog = new LoginLog(1L,date,username);
+		loginlogRepository.save(loginlog);
 	}
 
 	@ApiOperation("新增帳號與權限")
