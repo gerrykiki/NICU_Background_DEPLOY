@@ -30,7 +30,7 @@ public class LogController {
 	@Autowired
 	LoginlogRepository loginlogRepository;
 
-	@ApiOperation("Show login log(根據起始時間查詢成功登入記錄)")
+	@ApiOperation("Show login log(根據起始時間查詢成功登入記錄)(time格式為yyyy-MM-ddTHH:mm:ss)")
 	@RequestMapping(value = "/getLoginlog/{starttime}/{endtime}", method = RequestMethod.GET)
 	public ResponseEntity<?> getLoginlog(
 			@Valid @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date starttime,
@@ -52,7 +52,7 @@ public class LogController {
 		List<LoginLog> newloginloglist = new ArrayList<LoginLog>();
 		for (LoginLog llog : loginloglist) {
 			if (llog.getTime().after(StartTime) && llog.getTime().before(EndTime)) {
-				LoginLog datalog = new LoginLog(llog.getIndexid(), llog.getTime(), llog.getUsername());
+				LoginLog datalog = new LoginLog(llog.getUuid(), llog.getTime(), llog.getUsername());
 				newloginloglist.add(datalog);
 			}
 		}
@@ -60,7 +60,7 @@ public class LogController {
 		return ResponseEntity.ok(newloginloglist);
 	}
 
-	@ApiOperation("Show API access log")
+	@ApiOperation("Show API access log (date格式為yyyy-MM-dd)")
 	@RequestMapping(value = "/getApilog/{date}", method = RequestMethod.GET)
 	public ResponseEntity<?> getAuthUser(@Valid @PathVariable String date) {
 
@@ -81,7 +81,7 @@ public class LogController {
 		return ResponseEntity.ok(apilog);
 	}
 
-	@ApiOperation("Show debug log")
+	@ApiOperation("Show debug log(date格式為yyyy-MM-dd)")
 	@RequestMapping(value = "/getDebuglog/{date}", method = RequestMethod.GET)
 	public ResponseEntity<?> getDebuglog(@Valid @PathVariable String date) {
 

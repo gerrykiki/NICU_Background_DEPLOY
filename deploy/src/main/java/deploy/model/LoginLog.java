@@ -13,7 +13,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class LoginLog {
 	@PrimaryKey
-	private Long indexid;
+	private String uuid;
 	private Date time;
 	private String username;
 

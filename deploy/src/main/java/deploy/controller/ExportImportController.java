@@ -32,6 +32,7 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(description = "匯入/匯出")
 @Controller
@@ -45,6 +46,7 @@ public class ExportImportController {
 	private Session session = cluster.connect("nicuspace");
 
 	@SuppressWarnings("unchecked")
+	@ApiOperation("匯出某人資訊")
 	@RequestMapping(value = "/exportJson/{transinno}", method = RequestMethod.GET)
 	public ResponseEntity<Object> exportJson(@Valid @PathVariable String transinno) throws IOException {
 
@@ -184,7 +186,8 @@ public class ExportImportController {
 	}
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/importJson/{transinno}/{date}", method = RequestMethod.GET)
+	@ApiOperation("匯入某人某天資訊")
+	@RequestMapping(value = "/importJson/{transinno}/{dateSome}", method = RequestMethod.GET)
 	public ResponseEntity<?> importJson(@Valid @PathVariable String transinno, @Valid @PathVariable String dateSome) {
 		String filename = "export_transinno_" + transinno + "_" + dateSome + ".json";
 		JSONParser jsonParser = new JSONParser();

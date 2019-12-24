@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import deploy.model.LoginLog;
 @Repository
-public interface LoginlogRepository extends CrudRepository<LoginLog,Long>{
+public interface LoginlogRepository extends CrudRepository<LoginLog,String>{
 
 }

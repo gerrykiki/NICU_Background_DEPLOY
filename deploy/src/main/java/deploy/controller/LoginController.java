@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -51,7 +52,7 @@ public class LoginController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
+
 	@Autowired
 	LoginlogRepository loginlogRepository;
 
@@ -67,19 +68,22 @@ public class LoginController {
 		}
 		authenticate(user.getUsername(), user.getPassword());
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-		
+
 		insertLoginlog(user.getUsername());
 
 		return ResponseEntity.ok(userDetails.getUsername());
 	}
-	
+
 	public void insertLoginlog(String username) throws ParseException {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		Date now = new Date();
 		String dateF = df.format(now);
 		Date date = df.parse(dateF);
-		
-		LoginLog loginlog = new LoginLog(1L,date,username);
+
+		UUID uuid = UUID.randomUUID();
+		String indexid = uuid.toString();
+
+		LoginLog loginlog = new LoginLog(indexid, date, username);
 		loginlogRepository.save(loginlog);
 	}
 
@@ -147,26 +151,24 @@ public class LoginController {
 		return ResponseEntity.ok(list);
 	}
 
-	/*@ApiOperation("取得全部資訊")
-	@RequestMapping(value = "/getAlluser", method = RequestMethod.GET)
-	public ResponseEntity<?> getAllUser() {
-		StringBuilder sb = new StringBuilder("SELECT * FROM user ;");
-		String query = sb.toString();
-
-		List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
-
-		ResultSet rs = session.execute(query);
-		rs.forEach(r -> {
-			Map<Object, Object> usr = new HashMap<Object, Object>();
-			usr.put("username", r.getString("username"));
-			usr.put("name", r.getString("name"));
-			usr.put("role", r.getInt("role"));
-
-			list.add(usr);
-		});
-
-		return ResponseEntity.ok(list);
-	}*/
+	/*
+	 * @ApiOperation("取得全部資訊")
+	 * 
+	 * @RequestMapping(value = "/getAlluser", method = RequestMethod.GET) public
+	 * ResponseEntity<?> getAllUser() { StringBuilder sb = new
+	 * StringBuilder("SELECT * FROM user ;"); String query = sb.toString();
+	 * 
+	 * List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
+	 * 
+	 * ResultSet rs = session.execute(query); rs.forEach(r -> { Map<Object, Object>
+	 * usr = new HashMap<Object, Object>(); usr.put("username",
+	 * r.getString("username")); usr.put("name", r.getString("name"));
+	 * usr.put("role", r.getInt("role"));
+	 * 
+	 * list.add(usr); });
+	 * 
+	 * return ResponseEntity.ok(list); }
+	 */
 
 	@ApiOperation("取得系統空間")
 	@RequestMapping(value = "/getSpace", method = RequestMethod.GET)
