@@ -69,9 +69,25 @@ public class LoginController {
 		authenticate(user.getUsername(), user.getPassword());
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
 
-		insertLoginlog(user.getUsername());
+		StringBuilder sb = new StringBuilder("SELECT * FROM user WHERE username='").append(userDetails.getUsername())
+				.append("' ALLOW FILTERING;");
+		String query = sb.toString();
 
-		return ResponseEntity.ok(userDetails.getUsername());
+		List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
+
+		ResultSet rs = session.execute(query);
+		rs.forEach(r -> {
+			Map<Object, Object> usr = new HashMap<Object, Object>();
+			usr.put("username", r.getString("username"));
+			usr.put("name", r.getString("name"));
+			usr.put("role", r.getInt("role"));
+
+			list.add(usr);
+		});
+
+		insertLoginlog(userDetails.getUsername());
+
+		return ResponseEntity.ok(list);
 	}
 
 	public void insertLoginlog(String username) throws ParseException {
@@ -170,7 +186,7 @@ public class LoginController {
 	 * return ResponseEntity.ok(list); }
 	 */
 
-	@ApiOperation("取得系統空間")
+	@ApiOperation("取得系統空間(unit:bytes)")
 	@RequestMapping(value = "/getSpace", method = RequestMethod.GET)
 	public ResponseEntity<?> getSpace() {
 		File[] roots = File.listRoots(); // 取得硬碟分區
@@ -179,7 +195,7 @@ public class LoginController {
 		Long unuse = 0L;
 		Long folder = 0L;
 
-		File data = new File("/usr/local/tomcat/webapps");
+		File data = new File("/usr/local/tomcat");
 
 		for (File file : roots) {
 			file.getPath();
