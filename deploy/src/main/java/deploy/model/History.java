@@ -23,6 +23,6 @@ public class History {
 	private Integer transinage;
 	private String caseid;
 	private String transinid;
-	private Date transintime;
+	private Date transouttime;
 	private String doctor;
 }

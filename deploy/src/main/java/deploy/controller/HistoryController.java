@@ -1,5 +1,6 @@
 package deploy.controller;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -59,10 +60,10 @@ public class HistoryController {
 	@RequestMapping(value = "/getOnehistory/{hisid}/{name}/{transouttime}/{doctor}", method = RequestMethod.GET)
 	public ResponseEntity<Object> getOnehistory(@Valid @PathVariable String hisid, @Valid @PathVariable String name,
 			@Valid @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date transouttime,
-			@Valid @PathVariable String doctor) {
-		StringBuilder sb = new StringBuilder("SELECT * FROM todo WHERE hisid='").append(hisid).append("' and name='")
-				.append(name).append("', ane transouttime='").append(transouttime).append("', and doctor='")
-				.append(doctor).append("' ALLOW FILTERING;");
+			@Valid @PathVariable String doctor) throws ParseException {
+
+		StringBuilder sb = new StringBuilder("SELECT * FROM history WHERE hisid='").append(hisid).append("' and name='")
+				.append(name).append("' and doctor='").append(doctor).append("' ALLOW FILTERING;");
 		String query = sb.toString();
 
 		List<History> list = new ArrayList<History>();
@@ -70,11 +71,11 @@ public class HistoryController {
 		ResultSet rs = session.execute(query);
 		rs.forEach(r -> {
 			if (r.getString("hisid").equals(hisid) && r.getString("name").equals(name)
-					&& r.getTimestamp("transouttime").equals(transouttime) && r.getString("doctor").equals(doctor)) {
+					&& r.getTimestamp("transouttime").compareTo(transouttime) == 0 && r.getString("doctor").equals(doctor)) {
 				History _history = new History(r.getString("uuid"), r.getInt("bednumber"), r.getString("hisid"),
 						r.getString("name"), r.getInt("psex"), r.getInt("weight"), r.getInt("weeks"),
 						r.getInt("transinage"), r.getString("caseid"), r.getString("transinid"),
-						r.getTimestamp("transintime"), r.getString("doctor"));
+						r.getTimestamp("transouttime"), r.getString("doctor"));
 				list.add(_history);
 			}
 		});
