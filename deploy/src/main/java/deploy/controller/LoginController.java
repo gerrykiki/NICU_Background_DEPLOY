@@ -69,7 +69,13 @@ public class LoginController {
 		authenticate(user.getUsername(), user.getPassword());
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
 
-		StringBuilder sb = new StringBuilder("SELECT * FROM user WHERE username='").append(userDetails.getUsername())
+		insertLoginlog(userDetails.getUsername());
+
+		return ResponseEntity.ok(loginInfo(userDetails.getUsername()));
+	}
+
+	public List<Map<Object, Object>> loginInfo(String username) {
+		StringBuilder sb = new StringBuilder("SELECT * FROM user WHERE username='").append(username)
 				.append("' ALLOW FILTERING;");
 		String query = sb.toString();
 
@@ -85,9 +91,7 @@ public class LoginController {
 			list.add(usr);
 		});
 
-		insertLoginlog(userDetails.getUsername());
-
-		return ResponseEntity.ok(list);
+		return list;
 	}
 
 	public void insertLoginlog(String username) throws ParseException {
