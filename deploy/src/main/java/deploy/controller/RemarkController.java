@@ -69,7 +69,7 @@ public class RemarkController {
 		ResultSet rs = session.execute(query);
 		rs.forEach(r -> {
 			list.add(new Remark(r.getString("transid"), r.getString("type"), r.getTimestamp("time"),
-					r.getString("name"), r.getString("remark")));
+					r.getString("name"), r.getString("remark"),r.getString("editor")));
 		});
 
 		return ResponseEntity.ok(list);

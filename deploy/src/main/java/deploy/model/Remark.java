@@ -18,4 +18,5 @@ public class Remark {
 	 private Date time;
 	 private String name;
 	 private String remark;
+	 private String editor;
 }
