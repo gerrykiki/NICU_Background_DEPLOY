@@ -1,5 +1,7 @@
 package deploy.model;
 
+import java.util.Date;
+
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -15,8 +17,8 @@ public class Patient {
 	private String caseid;
 	private String hisid;
 	private String pnamec;	
-	private String psex;
+	private Integer psex;
 	//private String transindays;
-	private String transintime;
+	private Date transintime;
 	private String transinid;
 }

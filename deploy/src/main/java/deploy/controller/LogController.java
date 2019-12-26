@@ -52,7 +52,8 @@ public class LogController {
 		List<LoginLog> newloginloglist = new ArrayList<LoginLog>();
 		for (LoginLog llog : loginloglist) {
 			if (llog.getTime().after(StartTime) && llog.getTime().before(EndTime)) {
-				LoginLog datalog = new LoginLog(llog.getUuid(), llog.getTime(), llog.getUsername());
+				LoginLog datalog = new LoginLog(llog.getUuid(), llog.getTime(), llog.getUsername(), llog.getName(),
+						llog.getRole());
 				newloginloglist.add(datalog);
 			}
 		}

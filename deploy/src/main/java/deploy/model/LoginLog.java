@@ -16,5 +16,7 @@ public class LoginLog {
 	private String uuid;
 	private Date time;
 	private String username;
+	private String name;
+	private Integer role;
 
 }

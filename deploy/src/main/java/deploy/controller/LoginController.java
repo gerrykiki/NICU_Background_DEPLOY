@@ -69,8 +69,6 @@ public class LoginController {
 		authenticate(user.getUsername(), user.getPassword());
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
 
-		insertLoginlog(userDetails.getUsername());
-
 		return ResponseEntity.ok(loginInfo(userDetails.getUsername()));
 	}
 
@@ -88,13 +86,19 @@ public class LoginController {
 			usr.put("name", r.getString("name"));
 			usr.put("role", r.getInt("role"));
 
+			try {
+				insertLoginlog(r.getString("username"), r.getString("name"), r.getInt("role"));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
 			list.add(usr);
 		});
 
 		return list;
 	}
 
-	public void insertLoginlog(String username) throws ParseException {
+	public void insertLoginlog(String username, String name, Integer role) throws ParseException {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		Date now = new Date();
 		String dateF = df.format(now);
@@ -103,7 +107,7 @@ public class LoginController {
 		UUID uuid = UUID.randomUUID();
 		String indexid = uuid.toString();
 
-		LoginLog loginlog = new LoginLog(indexid, date, username);
+		LoginLog loginlog = new LoginLog(indexid, date, username, name, role);
 		loginlogRepository.save(loginlog);
 	}
 
