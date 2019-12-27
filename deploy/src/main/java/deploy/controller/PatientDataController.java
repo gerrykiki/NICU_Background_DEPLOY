@@ -83,7 +83,7 @@ public class PatientDataController {
 		ResultSet rs = session.execute(query);
 		rs.forEach(r -> {
 			list.add(new Patient(r.getString("caseid"), r.getString("hisid"), r.getString("pnamec"),
-					r.getInt("psex"), r.getTimestamp("transintime"), r.getString("transinid")));
+					r.getInt("psex"), r.getString("transintime"), r.getString("transinid")));
 		});
 
 		return ResponseEntity.ok(list);
