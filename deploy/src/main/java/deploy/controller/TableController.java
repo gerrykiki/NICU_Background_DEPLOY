@@ -60,10 +60,10 @@ public class TableController {
 
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					// if (rs.getMetaData().getColumnName(i).compareTo("PBIRTHDT") == 0) {
-					// 	mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					// mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 					// }
 					// if (rs.getMetaData().getColumnName(i).compareTo("PPBLOOD") == 0) {
-					// 	mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
+					// mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 					// }
 					mm.put(rs.getMetaData().getColumnName(i), rs.getString(i));
 				}
@@ -135,7 +135,8 @@ public class TableController {
 				filter.put("PPBLOOD", ppblood);
 
 				// NisController nis = new NisController();
-				// List<Map<Object, Object>> birweeks = nis.QMNC((String) filter.get("PCASENO"));
+				// List<Map<Object, Object>> birweeks = nis.QMNC((String)
+				// filter.get("PCASENO"));
 				// Map<Object, Object> birweeksmap = birweeks.get(0);
 				// String days_birth = (String) birweeksmap.get("days");
 				// String weeks_birth = (String) birweeksmap.get("weeks");
@@ -148,9 +149,9 @@ public class TableController {
 				String transintime = (String) plocdata.get("PLOCDT");
 				String transindays = (String) plocdata.get("PLOCTM");
 				String transinid = "NICU" + (String) plocdata.get("PLOCDT") + (String) plocdata.get("PLOCTM");
+				Integer psex = Integer.parseInt(filter.get("PSEX").toString());
 				Patient h = new Patient(filter.get("PCASENO").toString(), filter.get("PHISTNUM").toString(),
-						filter.get("PNAMEC").toString(), filter.get("PSEX").toString(), transintime,
-						transinid);
+						filter.get("PNAMEC").toString(), psex, transintime, transinid);
 				patientrepository.save(h);
 				data.add(filter);
 
@@ -211,13 +212,13 @@ public class TableController {
 				filter.put("PPBLOOD", ppblood);
 
 				// NisController nis = new NisController();
-				// List<Map<Object, Object>> birweeks = nis.QMNC((String) filter.get("PCASENO"));
+				// List<Map<Object, Object>> birweeks = nis.QMNC((String)
+				// filter.get("PCASENO"));
 				// Map<Object, Object> birweeksmap = birweeks.get(0);
 				// String days_birth = (String) birweeksmap.get("days");
 				// String weeks_birth = (String) birweeksmap.get("weeks");
 				// filter.put("WEEKS_BIRTH", weeks_birth);
 				// filter.put("DAYSS_BIRTH", days_birth);
-
 
 				List<Map<Object, Object>> plocobject = PLOC(filter.get("PCASENO"));
 				Collections.reverse(plocobject);
@@ -225,9 +226,9 @@ public class TableController {
 				String transintime = (String) plocdata.get("PLOCDT");
 				String transindays = (String) plocdata.get("PLOCTM");
 				String transinid = "NICU" + (String) plocdata.get("PLOCDT") + (String) plocdata.get("PLOCTM");
+				Integer psex = Integer.parseInt(filter.get("PSEX").toString());
 				Patient h = new Patient(filter.get("PCASENO").toString(), filter.get("PHISTNUM").toString(),
-						filter.get("PNAMEC").toString(), filter.get("PSEX").toString(), transintime,
-						transinid);
+						filter.get("PNAMEC").toString(), psex, transintime, transinid);
 				patientrepository.save(h);
 				data.add(filter);
 
@@ -242,7 +243,6 @@ public class TableController {
 		}
 		return data;
 	}
-
 
 	@GetMapping("/PLOC/{PCASENO}")
 	public List<Map<Object, Object>> PLOC(@PathVariable Object PCASENO) {

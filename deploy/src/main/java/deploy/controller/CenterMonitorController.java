@@ -74,12 +74,12 @@ public class CenterMonitorController {
 
 		Calendar cal0 = Calendar.getInstance();
 		cal0.setTime(starttime);
-		cal0.add(Calendar.DATE, -1);
+		cal0.add(Calendar.SECOND, -1);
 		Date StartTime = cal0.getTime();
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(endtime);
-		cal.add(Calendar.DATE, 1);
+		cal.add(Calendar.SECOND, 1);
 		Date EndTime = cal.getTime();
 
 		rs.forEach(r -> {
